@@ -15,18 +15,19 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="25dp"/>
+            <solid android:color="@color/green_00d092" />
+        </shape>
+    </item>
 
-    <color name="iron_cfd4da">#cfd4da</color>
-    <color name="iron_8B978B">#8B978B</color>
-
-    <color name="green_00d092">#00d092</color>
-
-    <color name="orange_fda70f">#fda70f</color>
-</resources>
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="25dp"/>
+            <solid android:color="@color/green_00d092" />
+        </shape>
+    </item>
+</selector>

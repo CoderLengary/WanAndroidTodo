@@ -15,18 +15,22 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/product_sans_italic"
+        app:fontStyle="italic"
+        app:fontWeight="400"
+        app:font="@font/product_sans_italic"/>
 
-    <color name="iron_cfd4da">#cfd4da</color>
-    <color name="iron_8B978B">#8B978B</color>
-
-    <color name="green_00d092">#00d092</color>
-
-    <color name="orange_fda70f">#fda70f</color>
-</resources>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/product_sans_regular"
+        app:fontStyle="normal"
+        app:fontWeight="400"
+        app:font="@font/product_sans_regular"/>
+</font-family>

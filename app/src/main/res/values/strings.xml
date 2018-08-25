@@ -1,3 +1,32 @@
+<!--
+  ~ Copyright (c) 2018 CoderLengary
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <resources>
     <string name="app_name">WanAndroidTodo</string>
+    
+    <!-- Login start-->
+    <string name="login_title">Todo-List.</string>
+    <string name="login_title_desc">Complete a plan every day</string>
+    <string name="login_user_name_hint">Enter your name</string>
+    <string name="login_password_hint">Enter your password</string>
+    <string name="login_re_password_hint">Enter your password again</string>
+    <string name="login_btn_login">Sign in Now</string>
+    <string name="login_btn_register">Join us</string>
+    <string name="login_link_to_sign_up">Don\'t have a account? create one</string>
+    <string name="login_link_to_sign_in">Already a member? Login</string>
+    <string name="login_toggle_desc">Alter the visibility of password</string>
+    <!-- Login end-->
 </resources>
