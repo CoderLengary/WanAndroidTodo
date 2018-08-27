@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">WanAndroidTodo</string>
+    <string name="app_name">Todo</string>
     
     <!-- Login start-->
     <string name="login_title">Todo-List.</string>

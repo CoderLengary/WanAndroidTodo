@@ -1,6 +1,23 @@
-package com.example.lengary_l.wanandroidtodo.mvvm.login
+/*
+ * Copyright (c) 2018 CoderLengary
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.example.lengary_l.wanandroidtodo.login
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import com.example.lengary_l.wanandroidtodo.R
 
@@ -13,6 +30,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.container)
         initsFragment(savedInstanceState)
         showFragment(FragmentType.LOGIN)
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        val fm = supportFragmentManager
+        fm.putFragment(outState!!, LoginFragment::class.java.simpleName, mLoginFragment)
+        fm.putFragment(outState!!, RegisterFragment::class.java.simpleName, mRegisterFragment)
     }
 
 
@@ -42,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
     fun showFragment(type: FragmentType){
         val fm = supportFragmentManager
         when(type){
-            FragmentType.LOGIN  -> fm.beginTransaction()
+            FragmentType.LOGIN -> fm.beginTransaction()
                     .setCustomAnimations(R.anim.right_in,R.anim.right_out)
                     .hide(mRegisterFragment)
                     .show(mLoginFragment)

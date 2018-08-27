@@ -3,6 +3,8 @@ package com.example.lengary_l.wanandroidtodo.data
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
+import com.example.lengary_l.wanandroidtodo.room.converter.IntTypeConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -25,6 +27,7 @@ data class LoginData(
 )
 
 @Entity( tableName = "login")
+@TypeConverters(IntTypeConverter::class)
 data class LoginDetailData(
         @ColumnInfo(name = "collectIds")
         @SerializedName("collectIds")
