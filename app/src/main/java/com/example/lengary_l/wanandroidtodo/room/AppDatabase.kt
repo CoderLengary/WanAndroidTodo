@@ -11,13 +11,13 @@ import com.example.lengary_l.wanandroidtodo.room.dao.LoginDetailDataDao
  * Created by CoderLengary
  */
 @Database(
-        entities = [LoginDetailData::class], version = 1
+        entities = [LoginDetailData::class], version = 1, exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
     abstract fun LoginDetailDataDao(): LoginDetailDataDao
 
     companion object {
-        const val DATABASE_NAME = "wan-android-db"
+        private const val DATABASE_NAME = "wan-android-db"
 
         private var INSTANCE: AppDatabase? = null
 

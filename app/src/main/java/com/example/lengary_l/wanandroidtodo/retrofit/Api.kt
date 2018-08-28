@@ -23,11 +23,11 @@ class Api private constructor() {
 
         const val DELETE_TODO = TODO_BASE + "delete/"
 
-        const val UPDATE_DONE_TODO = TODO_BASE + "done/"
+        const val UPDATE_DONE = TODO_BASE + "done/"
 
-        const val GET_UNDO_TODO = TODO_BASE + "listnotdo/"
+        const val GET_UNDO_LIST = TODO_BASE + "listnotdo/"
 
-        const val GET_DONE_TODO = TODO_BASE + "listdone/"
+        const val GET_DONE_LIST = TODO_BASE + "listdone/"
     }
 
 }

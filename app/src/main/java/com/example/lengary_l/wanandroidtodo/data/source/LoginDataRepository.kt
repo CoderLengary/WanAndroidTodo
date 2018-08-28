@@ -17,9 +17,9 @@ class LoginDataRepository private constructor(
     companion object {
         private var INSTANCE: LoginDataRepository ?= null
         fun getInstance(mRemote: LoginDataSource, mLocal: LoginDataSource): LoginDataRepository {
-            if(INSTANCE==null){
-                synchronized(LoginDataRepository::javaClass){
-                    if(INSTANCE == null){
+            if(INSTANCE==null) {
+                synchronized(LoginDataRepository::javaClass) {
+                    if(INSTANCE == null) {
                         INSTANCE = LoginDataRepository(mRemote, mLocal)
                     }
                 }

@@ -17,7 +17,7 @@
 <resources>
     <string name="app_name">Todo</string>
     
-    <!-- Login start-->
+    <!-- Login start -->
     <string name="login_title">Todo-List.</string>
     <string name="login_title_desc">Complete a plan every day</string>
     <string name="login_user_name_hint">Enter your name</string>
@@ -28,5 +28,18 @@
     <string name="login_link_to_sign_up">Don\'t have a account? create one</string>
     <string name="login_link_to_sign_in">Already a member? Login</string>
     <string name="login_toggle_desc">Alter the visibility of password</string>
-    <!-- Login end-->
+    <!-- Login end -->
+
+    <!-- Main start -->
+    <string name="nav_home">Home</string>
+    <string name="nav_settings">Settings</string>
+    <!-- Main end -->
+
+    <!-- Home start -->
+    <string name="home_todo">Todo</string>
+    <string name="home_done">Done</string>
+    <!-- Home end -->
+    <!-- Error start-->
+    <string name="empty_text">There is nothing</string>
+    <!-- Error end -->
 </resources>

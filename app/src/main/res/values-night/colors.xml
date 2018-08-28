@@ -16,11 +16,19 @@
   -->
 
 <resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
 
-    <dimen name="activity_margin_half">8dp</dimen>
+    <color name="iron_cfd4da">#cfd4da</color>
+    <color name="iron_8B978B">#8B978B</color>
 
-    <dimen name="card_vertical_margin_half">4dp</dimen>
+    <color name="green_00d092">#00d092</color>
+
+    <color name="orange_fda70f">#fda70f</color>
+
+    <color name="layout_background">#303030</color>
 </resources>

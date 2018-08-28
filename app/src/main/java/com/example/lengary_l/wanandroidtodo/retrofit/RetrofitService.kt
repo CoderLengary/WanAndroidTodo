@@ -30,14 +30,14 @@ interface RetrofitService {
 
     interface TodoService {
         @POST(Api.GET_ALL_TODO + "{type}/json")
-        fun getAllTodo(@Path("type") type: Int): Call<TodoData>
+        fun getAllListByType(@Path("type") type: Int): Call<TodoData>
 
-        @POST(Api.GET_UNDO_TODO + "{type}/json/{page}")
-        fun getUndoTodo(@Path("type") type: Int,
+        @POST(Api.GET_UNDO_LIST + "{type}/json/{page}")
+        fun getUndoList(@Path("type") type: Int,
                         @Path("page") page: Int): Call<DoOrUndoListData>
 
-        @POST(Api.GET_DONE_TODO + "{type}/json/{page}")
-        fun getDoneTodo(@Path("type") type: Int,
+        @POST(Api.GET_DONE_LIST + "{type}/json/{page}")
+        fun getDoneList(@Path("type") type: Int,
                         @Path("page") page: Int): Call<DoOrUndoListData>
 
 
@@ -61,8 +61,8 @@ interface RetrofitService {
         fun deleteTodo(@Path("id") id: Int): Call<Status>
 
         @FormUrlEncoded
-        @POST(Api.UPDATE_DONE_TODO + "{id}/json")
-        fun updateDoneTodo(@Path("id") id: Int,
+        @POST(Api.UPDATE_DONE + "{id}/json")
+        fun updateDone(@Path("id") id: Int,
                            @Field("status") status: Int): Call<Status>
 
     }

@@ -2,6 +2,7 @@ package com.example.lengary_l.wanandroidtodo.room.dao
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
 import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 
 /**
@@ -10,7 +11,7 @@ import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 @Dao
 interface LoginDetailDataDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLoginDetailData(data: LoginDetailData)
 
 }

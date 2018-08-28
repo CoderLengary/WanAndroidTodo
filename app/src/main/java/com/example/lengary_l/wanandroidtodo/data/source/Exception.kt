@@ -5,4 +5,4 @@ package com.example.lengary_l.wanandroidtodo.data.source
  */
 
 open class DataSourceException(message: String): Exception(message)
-class RemoteException : DataSourceException("Data not found in remote data source")
+class RemoteException constructor(message: String = "Something wrong") : DataSourceException(message)

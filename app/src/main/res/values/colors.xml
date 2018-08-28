@@ -29,4 +29,8 @@
     <color name="green_00d092">#00d092</color>
 
     <color name="orange_fda70f">#fda70f</color>
+
+    <color name="layout_background">#fafafa</color>
+
+    <color name="colorNavItemUnselected">#a5a5a5</color>
 </resources>

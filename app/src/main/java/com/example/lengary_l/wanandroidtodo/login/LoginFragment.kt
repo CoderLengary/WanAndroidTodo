@@ -18,6 +18,7 @@ package com.example.lengary_l.wanandroidtodo.login
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -27,9 +28,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import com.example.lengary_l.wanandroidtodo.Injection.Injection
+import android.widget.Toast
+import com.example.lengary_l.wanandroidtodo.MainActivity
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.PostType
+import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
 import com.example.lengary_l.wanandroidtodo.util.isNotValid
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -109,11 +113,19 @@ class LoginFragment : Fragment() {
     private fun subscribeUi() {
 
         viewModel.loginData.observe(viewLifecycleOwner, Observer {
-            if (it?.errorCode == -1){
-                inputLayoutPassword.error = it.errorMsg
+            if (it?.errorCode != 0){
+                inputLayoutPassword.error = it?.errorMsg
             }else {
-                Log.e("LoginFragment", it?.data.toString())
+                Log.e("LoginFragment", it.data.toString())
+                SharedPreferencesUtils.putUserId(id = it.data.id)
+                val intent = Intent(context, MainActivity::class.java)
+                startActivity(intent)
             }
+        })
+
+        viewModel.exceptionData.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            Log.e("LoginFragment", it)
         })
 
     }

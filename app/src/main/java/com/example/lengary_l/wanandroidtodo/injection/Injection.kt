@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.Injection
+package com.example.lengary_l.wanandroidtodo.injection
 
 import android.content.Context
 import com.example.lengary_l.wanandroidtodo.data.source.LoginDataRepository
+import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
 import com.example.lengary_l.wanandroidtodo.data.source.local.LoginDataLocalSource
 import com.example.lengary_l.wanandroidtodo.data.source.remote.LoginDataRemoteSource
+import com.example.lengary_l.wanandroidtodo.data.source.remote.TodoDataRemoteSource
 import com.example.lengary_l.wanandroidtodo.room.AppDatabase
 import com.example.lengary_l.wanandroidtodo.util.AppExecutors
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModelFactory
+import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModelFactory
 
 /**
  * Created by CoderLengary
@@ -33,8 +36,16 @@ object Injection {
     private fun getLoginDataRepository(context: Context): LoginDataRepository =
             LoginDataRepository.getInstance(LoginDataRemoteSource.getInstance(mAppExecutors), LoginDataLocalSource.getInstance(mAppExecutors, AppDatabase.getInstance(context).LoginDetailDataDao()))
 
+    private fun getTodoDataRepository(): TodoDataRepository =
+            TodoDataRepository.getInstance(TodoDataRemoteSource.getInstance(mAppExecutors))
+
     fun provideLoginDataViewModelFactory(context: Context): LoginDataViewModelFactory {
         val mLoginDataRepository = getLoginDataRepository(context)
         return LoginDataViewModelFactory(mLoginDataRepository)
+    }
+
+    fun provideTodoDataViewModelFactory(): TodoDataViewModelFactory {
+        val mTodoDataRepository = getTodoDataRepository()
+        return TodoDataViewModelFactory(mTodoDataRepository)
     }
 }

@@ -26,12 +26,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.lengary_l.wanandroidtodo.Injection.Injection
+import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.PostType
+import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.util.isNotValid
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModel
-
 import kotlinx.android.synthetic.main.fragment_register.*
 
 /**
@@ -120,11 +120,17 @@ class RegisterFragment : Fragment()  {
 
     private fun subscribeUi() {
         viewModel.loginData.observe(viewLifecycleOwner, Observer {
-            if (it?.errorCode == -1){
-                inputLayoutUser.error = it.errorMsg
+            if (it?.errorCode != 0){
+                inputLayoutUser.error = it?.errorMsg
             }else {
-                Log.e("RegisterFragment", it?.data.toString())
+                Log.e("RegisterFragment", it.data.toString())
+                //val intent = Intent(context, MainActivity::class.java)
+                //startActivity(intent)
             }
+        })
+
+        viewModel.exceptionData.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show()
         })
     }
 

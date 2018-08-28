@@ -18,10 +18,9 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.example.lengary_l.wanandroidtodo.data.LoginData
-import com.example.lengary_l.wanandroidtodo.data.PostType
-import com.example.lengary_l.wanandroidtodo.data.source.LoginDataRepository
+import com.example.lengary_l.wanandroidtodo.data.TodoData
 import com.example.lengary_l.wanandroidtodo.data.source.Result
+import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
 import com.example.lengary_l.wanandroidtodo.util.launchSilent
 import kotlinx.coroutines.experimental.android.UI
 import kotlin.coroutines.experimental.CoroutineContext
@@ -29,30 +28,20 @@ import kotlin.coroutines.experimental.CoroutineContext
 /**
  * Created by CoderLengary
  */
-class LoginDataViewModel (
-        private val loginDataRepository: LoginDataRepository,
-
+class TodoDataViewModel(
+        private val mRepository: TodoDataRepository,
         private val uiContext: CoroutineContext = UI
-): ViewModel(){
+): ViewModel() {
 
+    val todoData= MutableLiveData<TodoData>()
 
-    val loginData = MutableLiveData<LoginData>()
-
-    val exceptionData = MutableLiveData<String>()
-
-    fun setInput(userName: String, password: String, type: PostType){
+    fun getTodoData() {
         launchSilent(uiContext) {
-            val result = loginDataRepository.getRemoteLoginData(userName, password, type)
+            val result = mRepository.getAllListByType(0)
             if (result is Result.Success) {
-                loginData.value = result.data
-            }else if (result is Result.Error){
-                exceptionData.value = result.exception.message
+                todoData.value = result.data
             }
         }
     }
-
-
-
-
 
 }
