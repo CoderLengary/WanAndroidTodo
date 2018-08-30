@@ -49,8 +49,13 @@ class LoginDataRemoteSource private constructor(
                 PostType.TYPE_REGISTER -> mLoginService.register(userName, password, password).execute()
             }
 
+
             if (response.isSuccessful) {
                 response.body()?.let {
+                    /*Even we get the wrong data whose error code is not zero(Not network exception),
+                     We need it to show the error message to the user,
+                     so we return it by {Result.Success}  instead of {Result.Error}
+                     */
                     Result.Success(it)
                 } ?: run {
                     Result.Error(RemoteException())
@@ -65,6 +70,7 @@ class LoginDataRemoteSource private constructor(
 
 
     }
+
 
     override suspend fun getLocalLoginData(): Result<LoginData> = Result.Error(RemoteException())
 

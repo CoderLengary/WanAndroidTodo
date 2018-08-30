@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.login
+package com.example.lengary_l.wanandroidtodo.ui.login
 
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.example.lengary_l.wanandroidtodo.R
 
 class LoginActivity : AppCompatActivity() {
@@ -30,14 +31,15 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.container)
         initsFragment(savedInstanceState)
         showFragment(FragmentType.LOGIN)
-
+        Log.e("LoginActivity", "onCreate")
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
         val fm = supportFragmentManager
-        fm.putFragment(outState!!, LoginFragment::class.java.simpleName, mLoginFragment)
-        fm.putFragment(outState!!, RegisterFragment::class.java.simpleName, mRegisterFragment)
+        outState?.let {
+            fm.putFragment(outState, LoginFragment::class.java.simpleName, mLoginFragment)
+            fm.putFragment(outState, RegisterFragment::class.java.simpleName, mRegisterFragment) }
     }
 
 
@@ -81,5 +83,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("LoginActivity", "onDestroy")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 
 }

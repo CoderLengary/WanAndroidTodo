@@ -15,22 +15,9 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="colorPrimary">@android:color/white</color>
-    <color name="colorPrimaryDark">#ffe0e0e0</color>
-    <color name="colorAccent">@color/green_00d092</color>
+<layoutAnimation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animation="@anim/item_fall_down"
+    android:delay="15%"
+    android:animationOrder="normal"/>
 
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
-
-    <color name="iron_cfd4da">#cfd4da</color>
-    <color name="iron_8B978B">#8B978B</color>
-
-    <color name="green_00d092">#00d092</color>
-
-    <color name="orange_fda70f">#fda70f</color>
-
-    <color name="layout_background">#fafafa</color>
-
-    <color name="colorNavItemUnselected">#a5a5a5</color>
-</resources>

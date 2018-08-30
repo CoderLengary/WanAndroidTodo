@@ -57,7 +57,12 @@ class TodoDataRemoteSource private constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let {
-                    Result.Success(it)
+                    //We do not need the error data
+                    if (it.errorCode == 0) {
+                        Result.Success(it)
+                    }else {
+                        Result.Error(RemoteException(it.errorMsg))
+                    }
                 } ?: run {
                     Result.Error(RemoteException())
                 }

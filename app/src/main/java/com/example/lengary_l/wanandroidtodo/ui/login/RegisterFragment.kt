@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.login
+package com.example.lengary_l.wanandroidtodo.ui.login
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -27,7 +27,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.MainActivity
 import com.example.lengary_l.wanandroidtodo.R
@@ -36,41 +35,36 @@ import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
 import com.example.lengary_l.wanandroidtodo.util.isNotValid
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_register.*
 
 /**
  * Created by CoderLengary
  */
-class LoginFragment : Fragment() {
+class RegisterFragment : Fragment()  {
 
 
     companion object {
-        fun newInstance() = LoginFragment()
+        fun newInstance() = RegisterFragment()
     }
 
-    private val factory by lazy {
+    private val mFactory by lazy {
         Injection.provideLoginDataViewModelFactory(context!!)
     }
 
-    private val viewModel: LoginDataViewModel by lazy {
-         ViewModelProviders.of(this, factory)
+    private val mViewModel by lazy {
+        ViewModelProviders.of(this, mFactory)
                 .get(LoginDataViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_login, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(context){
-            val translateAnimation = AnimationUtils.loadAnimation(this, R.anim.down_in)
-            linear_layout?.startAnimation(translateAnimation)
+        Log.e("RegisterFragment", "onViewCreated")
+        linkToLogin.setOnClickListener {
+            (activity as LoginActivity).showFragment(FragmentType.LOGIN)
         }
-
-        linkToRegister.setOnClickListener {
-            (activity as LoginActivity).showFragment(FragmentType.REGISTER)
-        }
-
 
         editUser.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) = Unit
@@ -79,8 +73,8 @@ class LoginFragment : Fragment() {
                 inputLayoutUser.error = null
                 return
             }
-
         })
+
         editPassword.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) = Unit
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -88,48 +82,67 @@ class LoginFragment : Fragment() {
                 inputLayoutPassword.error = null
                 return
             }
-
         })
 
-        btnLogin.setOnClickListener {
+        editRePassword.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) = Unit
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                inputLayoutRePassword.error = null
+                return
+            }
+        })
+
+        btnRegister.setOnClickListener {
             val userName: String? = editUser.editableText.toString()
             val passWord: String? = editPassword.editableText.toString()
-
+            val rePassword: String? = editRePassword.editableText.toString()
             if (userName?.isNotValid()!!){
-                inputLayoutUser.error = "UserName is not valid"
+                inputLayoutUser.error = getString(R.string.error_user_name)
                 return@setOnClickListener
             }
 
             if (passWord?.isNotValid()!!){
-                inputLayoutPassword.error = "Password is not valid"
+                inputLayoutPassword.error = getString(R.string.error_password)
                 return@setOnClickListener
             }
 
-            viewModel.setInput(userName, passWord, PostType.TYPE_LOGIN)
+            if (rePassword?.isNotValid()!!){
+                inputLayoutRePassword.error = getString(R.string.error_password)
+                return@setOnClickListener
+            }
+
+            if (passWord != rePassword){
+                inputLayoutRePassword.error = getString(R.string.error_re_password)
+                return@setOnClickListener
+            }
+
+            mViewModel.setInput(userName, passWord, PostType.TYPE_REGISTER)
         }
         subscribeUi()
     }
 
     private fun subscribeUi() {
-
-        viewModel.loginData.observe(viewLifecycleOwner, Observer {
+        Log.e("Register", "subscribeUi")
+        mViewModel.registerData.observe(viewLifecycleOwner, Observer {
             if (it?.errorCode != 0){
-                inputLayoutPassword.error = it?.errorMsg
+                inputLayoutUser.error = it?.errorMsg
             }else {
-                Log.e("LoginFragment", it.data.toString())
+                Log.e("RegisterFragment", it.data.toString())
                 SharedPreferencesUtils.putUserId(id = it.data.id)
                 val intent = Intent(context, MainActivity::class.java)
                 startActivity(intent)
             }
         })
 
-        viewModel.exceptionData.observe(viewLifecycleOwner, Observer {
+        mViewModel.registerExceptionData.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            Log.e("LoginFragment", it)
         })
-
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("RegisterFragment", "onDestroy")
+    }
 
 }

@@ -23,6 +23,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:titleTextColor="@color/colorPrimaryText"
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
 
     <FrameLayout

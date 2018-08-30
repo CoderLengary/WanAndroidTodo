@@ -27,5 +27,5 @@ class LoginDataViewModelFactory (
         private val mRepository: LoginDataRepository
 ): ViewModelProvider.NewInstanceFactory() {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = LoginDataViewModel(mRepository) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = LoginDataViewModel.getInstance(mRepository) as T
 }

@@ -28,7 +28,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:paddingTop="85dp"
-    tools:context=".login.LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
 
     <include layout="@layout/fragment_login_main" />

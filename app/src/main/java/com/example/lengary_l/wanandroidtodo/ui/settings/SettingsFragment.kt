@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.home
+package com.example.lengary_l.wanandroidtodo.ui.settings
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -26,12 +26,11 @@ import com.example.lengary_l.wanandroidtodo.R
 /**
  * Created by CoderLengary
  */
-class TodoFragment : Fragment() {
+class SettingsFragment: Fragment() {
 
     companion object {
-        fun newInstance() = TodoFragment()
+        fun newInstance() = SettingsFragment()
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home_page, container, false)
 
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_settings, container, false)
 }

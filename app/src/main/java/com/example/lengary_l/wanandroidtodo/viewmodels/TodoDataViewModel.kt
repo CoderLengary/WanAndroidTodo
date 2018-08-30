@@ -18,7 +18,9 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.example.lengary_l.wanandroidtodo.data.TodoData
+import android.util.Log
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
+import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.data.source.Result
 import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
 import com.example.lengary_l.wanandroidtodo.util.launchSilent
@@ -28,20 +30,53 @@ import kotlin.coroutines.experimental.CoroutineContext
 /**
  * Created by CoderLengary
  */
-class TodoDataViewModel(
+class TodoDataViewModel private constructor(
         private val mRepository: TodoDataRepository,
         private val uiContext: CoroutineContext = UI
 ): ViewModel() {
 
-    val todoData= MutableLiveData<TodoData>()
+    companion object {
+        private var INSTANCE: TodoDataViewModel ?= null
+        fun getInstance(mRepository: TodoDataRepository): TodoDataViewModel {
+            if (INSTANCE == null) {
+                INSTANCE = TodoDataViewModel(mRepository)
+            }
+            return INSTANCE as TodoDataViewModel
+        }
+    }
 
-    fun getTodoData() {
+    val liveTodoData = MutableLiveData<List<TodoDetailData>>()
+    val doneTodoData = MutableLiveData<List<TodoDetailData>>()
+
+
+
+
+    fun changeTodoDataByType(type: TodoListType) {
+
         launchSilent(uiContext) {
-            val result = mRepository.getAllListByType(0)
+            val liveTodoList = ArrayList<TodoDetailData>()
+            val doneTodoList = ArrayList<TodoDetailData>()
+            val result = mRepository.getAllListByType(type.value)
             if (result is Result.Success) {
-                todoData.value = result.data
+                result.data.data.allLiveList.forEach {
+                    liveTodoList.addAll(it.list)
+                }
+
+                result.data.data.allDoneList.forEach {
+                    doneTodoList .addAll(it.list)
+                }
+                if (!liveTodoList.isEmpty()) {
+                    liveTodoData.value = liveTodoList
+                }
+                if (!doneTodoList.isEmpty()) {
+                    doneTodoData.value = doneTodoList
+                }
+            } else if(result is Result.Error) {
+                Log.e("errror", result.exception.message)
             }
         }
     }
+
+
 
 }

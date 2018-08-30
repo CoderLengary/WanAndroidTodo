@@ -14,23 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.settings
-
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.lengary_l.wanandroidtodo.R
+package com.example.lengary_l.wanandroidtodo.ui.login
 
 /**
  * Created by CoderLengary
  */
-class SettingsFragment: Fragment() {
-
-    companion object {
-        fun newInstance() = SettingsFragment()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_settings, container, false)
+enum class FragmentType {
+    LOGIN,
+    REGISTER
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.home
+package com.example.lengary_l.wanandroidtodo.ui.home
 
 import android.content.Context
 import android.support.v4.app.Fragment

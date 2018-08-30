@@ -32,5 +32,7 @@
         android:font="@font/product_sans_regular"
         app:fontStyle="normal"
         app:fontWeight="400"
-        app:font="@font/product_sans_regular"/>
+        app:font="@font/product_sans_regular" />
+
+
 </font-family>

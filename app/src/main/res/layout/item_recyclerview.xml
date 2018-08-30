@@ -36,7 +36,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            tools:src="@drawable/ic_favorite_red_24dp"
+            android:id="@+id/imgType"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -51,15 +51,17 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textTitle"
                 android:textSize="24sp"
-                tools:text="今天我要去电影院看电影"
+                tools:text="宇宙的秘密"
                 android:textColor="@color/colorPrimaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/textContent"
                 android:layout_marginTop="@dimen/activity_margin_half"
-                tools:text="看的是新警察故事和该死的小米机械键盘"
+                tools:text="电子的运动是无规律的，它以概率波的形式运动，你无法准确地预料到电子将会出现在哪一个位置"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="14sp"
                 android:layout_width="match_parent"

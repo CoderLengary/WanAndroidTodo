@@ -17,6 +17,7 @@
 package com.example.lengary_l.wanandroidtodo.app
 
 import android.app.Application
+import com.squareup.leakcanary.LeakCanary
 
 /**
  * Created by CoderLengary
@@ -29,5 +30,11 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
     }
 }

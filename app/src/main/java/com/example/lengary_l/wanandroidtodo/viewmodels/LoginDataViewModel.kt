@@ -29,27 +29,51 @@ import kotlin.coroutines.experimental.CoroutineContext
 /**
  * Created by CoderLengary
  */
-class LoginDataViewModel (
+class LoginDataViewModel private constructor(
         private val loginDataRepository: LoginDataRepository,
 
         private val uiContext: CoroutineContext = UI
 ): ViewModel(){
 
+    companion object {
+        private var INSTANCE: LoginDataViewModel ?= null
+        fun getInstance(loginDataRepository: LoginDataRepository): LoginDataViewModel {
+            if (INSTANCE == null) {
+                INSTANCE = LoginDataViewModel(loginDataRepository)
+            }
+            return INSTANCE as LoginDataViewModel
+        }
+    }
 
     val loginData = MutableLiveData<LoginData>()
 
-    val exceptionData = MutableLiveData<String>()
+    val registerData = MutableLiveData<LoginData>()
+
+    val loginExceptionData = MutableLiveData<String>()
+
+    val registerExceptionData = MutableLiveData<String>()
 
     fun setInput(userName: String, password: String, type: PostType){
         launchSilent(uiContext) {
             val result = loginDataRepository.getRemoteLoginData(userName, password, type)
-            if (result is Result.Success) {
-                loginData.value = result.data
-            }else if (result is Result.Error){
-                exceptionData.value = result.exception.message
+
+            when(type) {
+                PostType.TYPE_LOGIN -> if (result is Result.Success) {
+                    loginData.value = result.data
+                }else if (result is Result.Error){
+                    loginExceptionData.value = result.exception.message
+                }
+
+                PostType.TYPE_REGISTER -> if (result is Result.Success) {
+                    registerData.value = result.data
+                }else if (result is Result.Error){
+                    registerExceptionData.value = result.exception.message
+                }
             }
+
         }
     }
+
 
 
 

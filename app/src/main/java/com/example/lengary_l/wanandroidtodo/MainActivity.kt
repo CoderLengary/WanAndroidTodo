@@ -3,8 +3,8 @@ package com.example.lengary_l.wanandroidtodo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.example.lengary_l.wanandroidtodo.home.HomeFragment
-import com.example.lengary_l.wanandroidtodo.settings.SettingsFragment
+import com.example.lengary_l.wanandroidtodo.ui.home.HomeFragment
+import com.example.lengary_l.wanandroidtodo.ui.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,8 +15,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolBar)
         initFragments(savedInstanceState)
-
+        showFragment(mHomeFragment)
         buttomNavView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_home -> showFragment(mHomeFragment)
@@ -24,6 +25,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        title = getString(R.string.nav_home)
     }
 
     private fun initFragments(savedInstanceState: Bundle?) {
@@ -55,13 +61,23 @@ class MainActivity : AppCompatActivity() {
             is HomeFragment -> fm.beginTransaction()
                     .show(mHomeFragment)
                     .hide(mSettingsFragment)
+                    .commit()
+
             is SettingsFragment -> fm.beginTransaction()
                     .show(mSettingsFragment)
                     .hide(mHomeFragment)
+                    .commit()
         }
         return true
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        val fm = supportFragmentManager
+        outState?.let {
+            fm.putFragment(it, HomeFragment::class.java.simpleName, mHomeFragment)
+            fm.putFragment(it, SettingsFragment::class.java.simpleName, mSettingsFragment) }
+    }
 
 }

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.login
+package com.example.lengary_l.wanandroidtodo.ui.login
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -26,41 +27,51 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import com.example.lengary_l.wanandroidtodo.MainActivity
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
 import com.example.lengary_l.wanandroidtodo.util.isNotValid
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModel
-import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
  * Created by CoderLengary
  */
-class RegisterFragment : Fragment()  {
+class LoginFragment : Fragment() {
 
 
     companion object {
-        fun newInstance() = RegisterFragment()
+        fun newInstance() = LoginFragment()
     }
 
-    private val factory by lazy {
+    private val mFactory by lazy {
         Injection.provideLoginDataViewModelFactory(context!!)
     }
 
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, factory)
+    private val mViewModel: LoginDataViewModel by lazy {
+         ViewModelProviders.of(this, mFactory)
                 .get(LoginDataViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        linkToLogin.setOnClickListener {
-            (activity as LoginActivity).showFragment(FragmentType.LOGIN)
+        Log.e("LoginFragment", "onViewCreated")
+        with(context){
+            val translateAnimation = AnimationUtils.loadAnimation(this, R.anim.down_in)
+            linear_layout?.startAnimation(translateAnimation)
         }
+
+        linkToRegister.setOnClickListener {
+            (activity as LoginActivity).showFragment(FragmentType.REGISTER)
+        }
+
 
         editUser.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) = Unit
@@ -69,8 +80,8 @@ class RegisterFragment : Fragment()  {
                 inputLayoutUser.error = null
                 return
             }
-        })
 
+        })
         editPassword.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) = Unit
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -78,61 +89,52 @@ class RegisterFragment : Fragment()  {
                 inputLayoutPassword.error = null
                 return
             }
+
         })
 
-        editRePassword.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) = Unit
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                inputLayoutRePassword.error = null
-                return
-            }
-        })
-
-        btnRegister.setOnClickListener {
+        btnLogin.setOnClickListener {
             val userName: String? = editUser.editableText.toString()
             val passWord: String? = editPassword.editableText.toString()
-            val rePassword: String? = editRePassword.editableText.toString()
+
             if (userName?.isNotValid()!!){
-                inputLayoutUser.error = "UserName is not valid"
+                inputLayoutUser.error = getString(R.string.error_user_name)
                 return@setOnClickListener
             }
 
             if (passWord?.isNotValid()!!){
-                inputLayoutPassword.error = "Password is not valid"
+                inputLayoutPassword.error = getString(R.string.error_password)
                 return@setOnClickListener
             }
 
-            if (rePassword?.isNotValid()!!){
-                inputLayoutRePassword.error = "Password is not valid"
-                return@setOnClickListener
-            }
-
-            if (passWord != rePassword){
-                inputLayoutRePassword.error = "Not match"
-                return@setOnClickListener
-            }
-
-            viewModel.setInput(userName, passWord, PostType.TYPE_REGISTER)
+            mViewModel.setInput(userName, passWord, PostType.TYPE_LOGIN)
         }
         subscribeUi()
     }
 
     private fun subscribeUi() {
-        viewModel.loginData.observe(viewLifecycleOwner, Observer {
+        Log.e("Login", "subscribeUi")
+        mViewModel.loginData.observe(viewLifecycleOwner, Observer {
             if (it?.errorCode != 0){
-                inputLayoutUser.error = it?.errorMsg
+                inputLayoutPassword.error = it?.errorMsg
             }else {
-                Log.e("RegisterFragment", it.data.toString())
-                //val intent = Intent(context, MainActivity::class.java)
-                //startActivity(intent)
+                Log.e("LoginFragment", it.data.toString())
+                SharedPreferencesUtils.putUserId(id = it.data.id)
+                val intent = Intent(context, MainActivity::class.java)
+                startActivity(intent)
             }
         })
 
-        viewModel.exceptionData.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show()
+        mViewModel.loginExceptionData.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("LoginFragment", "onDestroy")
+    }
+
 
 
 }

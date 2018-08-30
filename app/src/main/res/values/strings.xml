@@ -41,5 +41,8 @@
     <!-- Home end -->
     <!-- Error start-->
     <string name="empty_text">There is nothing</string>
+    <string name="error_user_name">UserName is not valid</string>
+    <string name="error_password">Password is not valid</string>
+    <string name="error_re_password">Not match</string>
     <!-- Error end -->
 </resources>

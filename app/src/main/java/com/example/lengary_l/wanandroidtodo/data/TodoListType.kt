@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.home
-
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.lengary_l.wanandroidtodo.R
+package com.example.lengary_l.wanandroidtodo.data
 
 /**
  * Created by CoderLengary
  */
-class DoneFragment: Fragment() {
-
-    companion object {
-        fun newIntance() = DoneFragment()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_home_page, container, false)
-
-
+enum class TodoListType(val value: Int) {
+    LOVE(0),
+    LIFE(1),
+    WORK(2),
+    STUDY(3)
 }

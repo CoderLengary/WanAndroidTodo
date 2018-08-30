@@ -18,6 +18,7 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.util.Log
 import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
 
 /**
@@ -27,5 +28,8 @@ class TodoDataViewModelFactory(
         private val mRepository: TodoDataRepository
 ): ViewModelProvider.NewInstanceFactory() {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = TodoDataViewModel(mRepository) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        Log.e("factory", "running")
+        return TodoDataViewModel.getInstance(mRepository) as T
+    }
 }

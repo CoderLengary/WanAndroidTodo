@@ -27,11 +27,11 @@ data class TodoData(
 data class Data(
         @SerializedName("doneList")
         @Expose
-        val doneList: List<TodoListData>,
+        val allDoneList: List<TodoListData>,
 
         @SerializedName("todoList")
         @Expose
-        val todoList: List<TodoListData>,
+        val allLiveList: List<TodoListData>,
 
         @SerializedName("type")
         @Expose
@@ -45,7 +45,7 @@ data class TodoListData(
 
         @SerializedName("todoList")
         @Expose
-        val todoList: List<TodoDetailData>
+        val list: List<TodoDetailData>
 )
 
 data class TodoDetailData(
