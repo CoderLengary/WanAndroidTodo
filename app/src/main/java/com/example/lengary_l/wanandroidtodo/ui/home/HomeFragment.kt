@@ -16,7 +16,9 @@
 
 package com.example.lengary_l.wanandroidtodo.ui.home
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -24,6 +26,7 @@ import android.view.*
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.ui.add.AddTodoActivity
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -38,6 +41,8 @@ class HomeFragment: Fragment() {
 
     private lateinit var mTodoFragment: TodoFragment
     private lateinit var mDoneFragment: DoneFragment
+
+    private var mCurrentListType: TodoListType ?= null
 
     private val mFactory by lazy {
         Injection.provideTodoDataViewModelFactory()
@@ -66,7 +71,14 @@ class HomeFragment: Fragment() {
         )
         viewPager.offscreenPageLimit = 2
         tabLayout.setupWithViewPager(viewPager)
-        changeType(TodoListType.LOVE)
+
+        //Default : love
+        mCurrentListType = changeType(TodoListType.LOVE)
+        fab.setOnClickListener {
+            val intent = Intent(context, AddTodoActivity::class.java)
+            startActivity(intent)
+        }
+        subscribeUi()
     }
     private fun initFragments(savedInstanceState: Bundle?) {
         val fm = childFragmentManager
@@ -81,25 +93,40 @@ class HomeFragment: Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         Log.e("HomeFragment", "createMenu is running")
-        inflater?.inflate(R.menu.menu_select, menu)
+        inflater?.inflate(R.menu.menu_home, menu)
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         val id = item?.itemId
-        when(id) {
-            R.id.menu_love -> changeType(TodoListType.LOVE)
-            R.id.menu_life -> changeType(TodoListType.LIFE)
-            R.id.menu_study -> changeType(TodoListType.STUDY)
-            R.id.menu_work -> changeType(TodoListType.WORK)
+        mCurrentListType = when(id) {
+            R.id.menu_love -> TodoListType.LOVE
+            R.id.menu_life -> TodoListType.LIFE
+            R.id.menu_study -> TodoListType.STUDY
+            R.id.menu_work -> TodoListType.WORK
+            else -> null
         }
+        mCurrentListType?.let { changeType(it) }
         return super.onOptionsItemSelected(item)
 
     }
 
-    private fun changeType(type: TodoListType) {
+    private fun changeType(type: TodoListType): TodoListType {
         mViewModel.changeTodoDataByType(type)
+        return type
+    }
+
+    private fun subscribeUi() {
+
+        //if updateType equals current listType. We should update the list manually.
+        //Otherwise the list will never show the latest data.
+        mViewModel.updateType.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                mCurrentListType -> mCurrentListType?.let { changeType(it) }
+                else -> Unit
+            }
+        })
     }
 
 }

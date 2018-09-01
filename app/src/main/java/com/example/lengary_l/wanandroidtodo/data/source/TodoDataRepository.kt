@@ -16,6 +16,7 @@
 
 package com.example.lengary_l.wanandroidtodo.data.source
 
+import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
 
 /**
@@ -24,6 +25,8 @@ import com.example.lengary_l.wanandroidtodo.data.TodoData
 class TodoDataRepository private constructor(
         private val mRemote: TodoDataSource
 ): TodoDataSource{
+
+
 
     companion object {
         private var INSTANCE: TodoDataRepository? =null
@@ -45,4 +48,11 @@ class TodoDataRepository private constructor(
 
     }
 
+    override suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status> {
+        return mRemote.submitTodo(title, content, date, type)
+    }
+
+    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
+        return mRemote.updateTodo(id, title, content, date, status, type)
+    }
 }

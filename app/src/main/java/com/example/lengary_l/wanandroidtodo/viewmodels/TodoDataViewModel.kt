@@ -36,6 +36,7 @@ class TodoDataViewModel private constructor(
 ): ViewModel() {
 
     companion object {
+        const val SUCCESS_MSG = "Success!"
         private var INSTANCE: TodoDataViewModel ?= null
         fun getInstance(mRepository: TodoDataRepository): TodoDataViewModel {
             if (INSTANCE == null) {
@@ -45,10 +46,16 @@ class TodoDataViewModel private constructor(
         }
     }
 
+    //Get
     val liveTodoData = MutableLiveData<List<TodoDetailData>>()
     val doneTodoData = MutableLiveData<List<TodoDetailData>>()
 
+    //Submit
+    val addStatusData = MutableLiveData<String>()
+    val updateType = MutableLiveData<TodoListType>()
 
+    //Update
+    val updateStatusData = MutableLiveData<String>()
 
 
     fun changeTodoDataByType(type: TodoListType) {
@@ -72,7 +79,43 @@ class TodoDataViewModel private constructor(
                     doneTodoData.value = doneTodoList
                 }
             } else if(result is Result.Error) {
-                Log.e("errror", result.exception.message)
+                Log.e("error", result.exception.message)
+            }
+        }
+    }
+
+    fun submitTodo(title: String, content: String, date: String, type: TodoListType) {
+
+        launchSilent(uiContext) {
+            val result = mRepository.submitTodo(title, content, date, type.value)
+
+            if (result is Result.Success) {
+                addStatusData.value = SUCCESS_MSG
+
+                //When we add an todo_data successfully, update the {addType}, one of the observers{ @link HomeFragment } will receive it.
+                updateType.value = type
+            }else if (result is Result.Error) {
+                addStatusData.value = result.exception.message
+            }
+        }
+
+    }
+
+    fun clearStatusData() {
+        addStatusData.value = null
+    }
+
+    fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: TodoListType) {
+
+        launchSilent(uiContext) {
+            val result = mRepository.updateTodo(id, title, content, date, status, type.value)
+            if (result is Result.Success) {
+                updateStatusData.value = SUCCESS_MSG
+
+                //When we complete a todo_data, update the {addType}, one of the observers{ @link HomeFragment } will receive it.
+                updateType.value = type
+            }else if (result is Result.Error) {
+                updateStatusData.value = result.exception.message
             }
         }
     }

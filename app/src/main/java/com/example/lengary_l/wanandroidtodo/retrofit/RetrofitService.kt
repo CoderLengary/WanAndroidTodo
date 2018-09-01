@@ -43,7 +43,7 @@ interface RetrofitService {
 
         @FormUrlEncoded
         @POST(Api.ADD_TODO)
-        fun addTodo(@Field("title") title: String,
+        fun submitTodo(@Field("title") title: String,
                     @Field("content") content: String,
                     @Field("date") date: String,
                     @Field("type") type: Int): Call<Status>

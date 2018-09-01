@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.data.source
+package com.example.lengary_l.wanandroidtodo.util
 
-import com.example.lengary_l.wanandroidtodo.data.Status
-import com.example.lengary_l.wanandroidtodo.data.TodoData
+import com.example.lengary_l.wanandroidtodo.data.TodoListType
 
 /**
  * Created by CoderLengary
  */
-interface TodoDataSource {
-
-    suspend fun getAllListByType(type: Int): Result<TodoData>
-
-    suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status>
-
-    suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
-
-}
+fun Int.changeToListType(): TodoListType =
+    when(this) {
+        TodoListType.LOVE.value -> TodoListType.LOVE
+        TodoListType.WORK.value -> TodoListType.WORK
+        TodoListType.LIFE.value -> TodoListType.LIFE
+        TodoListType.STUDY.value -> TodoListType.STUDY
+        else -> TodoListType.LOVE
+    }

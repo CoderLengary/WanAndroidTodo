@@ -15,14 +15,7 @@
   ~ limitations under the License.
   -->
 
-<resources>
-
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="activity_margin_half">8dp</dimen>
-
-    <dimen name="card_vertical_margin_half">4dp</dimen>
-
-    <dimen name="main_content_left_margin">56dp</dimen>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:drawable="@drawable/ic_favorite_red_24dp"/>
+    <item android:state_checked="false" android:drawable="@drawable/ic_favorite_grey_24dp"/>
+</selector>

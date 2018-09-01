@@ -16,6 +16,7 @@
 
 package com.example.lengary_l.wanandroidtodo.data.source.remote
 
+import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
 import com.example.lengary_l.wanandroidtodo.data.source.RemoteException
 import com.example.lengary_l.wanandroidtodo.data.source.Result
@@ -30,6 +31,8 @@ import kotlinx.coroutines.experimental.withContext
  */
 class TodoDataRemoteSource private constructor(
         private val mAppExecutors: AppExecutors): TodoDataSource {
+
+
 
     companion object {
         private var INSTANCE: TodoDataRemoteSource? = null
@@ -74,5 +77,48 @@ class TodoDataRemoteSource private constructor(
         }
     }
 
+    override suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
+        try {
+            val response = mTodoService.submitTodo(title, content, date, type).execute()
+            if (response.isSuccessful) {
+                response.body()?.let {
+
+                    if (it.errorCode == 0) {
+                        Result.Success(it)
+                    } else {
+                        Result.Error(RemoteException(it.errorMsg))
+                    }
+
+                } ?: run{
+                    Result.Error(RemoteException())
+                }
+            }else {
+                Result.Error(RemoteException())
+            }
+        }catch (e: Exception) {
+            Result.Error(RemoteException())
+        }
+    }
+
+    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
+        try {
+            val response = mTodoService.updateTodo(id, title, content, date, status, type).execute()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    if (it.errorCode == 0) {
+                        Result.Success(it)
+                    }else {
+                        Result.Error(RemoteException(it.errorMsg))
+                    }
+                }?: run {
+                    Result.Error(RemoteException())
+                }
+            }else {
+                Result.Error(RemoteException())
+            }
+        }catch (e: Exception) {
+            Result.Error(RemoteException())
+        }
+    }
 
 }

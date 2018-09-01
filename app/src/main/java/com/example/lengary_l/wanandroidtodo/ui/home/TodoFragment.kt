@@ -27,9 +27,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
+import com.example.lengary_l.wanandroidtodo.util.changeToListType
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
@@ -64,19 +67,30 @@ class TodoFragment : Fragment() {
         Log.e("Todo", mViewModel.toString())
         mViewModel.liveTodoData.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
-
                 val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
-                adapter?.let {
-                    it.updateData(list)
-                } ?: also {
+                if (adapter == null) {
                     adapter = TodoAdapter(list as MutableList<TodoDetailData>)
+                    adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
+                        override fun onItemClick(v: View, position: Int) {
+                            val item = list[position]
+                            mViewModel.updateTodo(item.id, item.title, item.content, item.dateStr, 1, item.type.changeToListType())
+                        }
+                    })
                     recyclerView.adapter = adapter
                     recyclerView.layoutAnimation = controller
+                }else {
+                    adapter?.updateData(list)
                 }
-
             }
-
-
         })
+
+        mViewModel.updateStatusData.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
     }
 }

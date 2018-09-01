@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
+import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
 import kotlinx.android.synthetic.main.item_recyclerview.view.*
 
 /**
@@ -30,8 +31,11 @@ import kotlinx.android.synthetic.main.item_recyclerview.view.*
  */
 class TodoAdapter(private val dataList: MutableList<TodoDetailData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var mListener: OnRecyclerViewItemOnClickListener ?= null
+
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder =
-            ItemViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_recyclerview, p0, false))
+            ItemViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_recyclerview, p0, false), mListener)
 
     override fun getItemCount(): Int = dataList.size
 
@@ -40,10 +44,19 @@ class TodoAdapter(private val dataList: MutableList<TodoDetailData>) : RecyclerV
         with((p0 as ItemViewHolder).itemView) {
             imgType.let {
                 when(todoDetailData.type) {
-                    TodoListType.LOVE.value -> it.setImageResource(R.drawable.ic_favorite_red_24dp)
-                    TodoListType.WORK.value -> it.setImageResource(R.drawable.ic_work_brown_24dp)
-                    TodoListType.STUDY.value -> it.setImageResource(R.drawable.ic_book_blue_24dp)
-                    TodoListType.LIFE.value -> it.setImageResource(R.drawable.ic_brightness_4_yellow_24dp)
+                    TodoListType.LOVE.value -> it.setImageResource(R.drawable.ic_favorite_white_24dp)
+                    TodoListType.WORK.value -> it.setImageResource(R.drawable.ic_work_white_24dp)
+                    TodoListType.STUDY.value -> it.setImageResource(R.drawable.ic_book_white_24dp)
+                    TodoListType.LIFE.value -> it.setImageResource(R.drawable.ic_brightness_4_white_24dp)
+                }
+            }
+
+            circleView.let {
+                when(todoDetailData.type) {
+                    TodoListType.LOVE.value -> it.setImageResource(R.color.red_f44336)
+                    TodoListType.WORK.value -> it.setImageResource(R.color.brown_6D4C41)
+                    TodoListType.STUDY.value -> it.setImageResource(R.color.blue_2196F3)
+                    TodoListType.LIFE.value -> it.setImageResource(R.color.yellow_FFEB3B)
                 }
             }
 
@@ -58,7 +71,25 @@ class TodoAdapter(private val dataList: MutableList<TodoDetailData>) : RecyclerV
         notifyDataSetChanged()
         notifyItemRemoved(list.size)
     }
-    class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
+    fun setItemClickListener(listener: OnRecyclerViewItemOnClickListener) {
+        mListener = listener
+    }
+
+    class ItemViewHolder(itemView: View,
+                         private val mListener: OnRecyclerViewItemOnClickListener?): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+
+
+        init {
+            with(itemView) {
+                imgCheck.setOnClickListener(this@ItemViewHolder)
+            }
+        }
+
+        override fun onClick(p0: View?) {
+            when(p0?.id) {
+                R.id.imgCheck -> mListener?.onItemClick(p0, layoutPosition)
+            }
+        }
     }
 }

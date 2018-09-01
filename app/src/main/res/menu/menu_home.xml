@@ -27,26 +27,26 @@
             <item android:id="@+id/menu_love"
                 android:enabled="true"
                 android:icon="@drawable/ic_favorite_red_24dp"
-                app:showAsAction="always"
-                android:title="love"/>
+                app:showAsAction="never"
+                android:title="@string/type_love"/>
 
             <item android:id="@+id/menu_work"
                 android:enabled="true"
                 android:icon="@drawable/ic_work_brown_24dp"
                 app:showAsAction="never"
-                android:title="work"/>
+                android:title="@string/type_work"/>
 
             <item android:id="@+id/menu_study"
                 android:enabled="true"
                 android:icon="@drawable/ic_book_blue_24dp"
                 app:showAsAction="never"
-                android:title="book"/>
+                android:title="@string/type_study"/>
 
             <item android:id="@+id/menu_life"
                 android:enabled="true"
                 android:icon="@drawable/ic_brightness_4_yellow_24dp"
                 app:showAsAction="never"
-                android:title="life"/>
+                android:title="@string/type_life"/>
 
 
         </menu>

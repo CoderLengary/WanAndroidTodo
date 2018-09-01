@@ -14,7 +14,7 @@ android {
     }
     defaultConfig {
         applicationId "com.example.lengary_l.wanandroidtodo"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,6 +36,8 @@ ext {
     nav_version = '1.0.0-alpha05'
     kotlinx_coroutines_version = '0.24.0'
     okhttpLoggingInterceptorVersion = "3.10.0"
+    dateTimePickerVersion = "3.6.3"
+    circleimageviewVersion = '2.1.0'
 }
 
 dependencies {
@@ -55,10 +57,19 @@ dependencies {
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:${okhttpLoggingInterceptorVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
+
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
 
+    //MaterialDateTimePicker
+    implementation("com.wdullaer:materialdatetimepicker:$dateTimePickerVersion") {
+        exclude group: 'com.android.support'
+    }
+
+    implementation("de.hdodenhof:circleimageview:$circleimageviewVersion"){
+        exclude group:'com.android.support'
+    }
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

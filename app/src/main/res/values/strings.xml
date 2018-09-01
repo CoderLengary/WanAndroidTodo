@@ -39,10 +39,30 @@
     <string name="home_todo">Todo</string>
     <string name="home_done">Done</string>
     <!-- Home end -->
+
+    <!-- Add to do start -->
+    <string name="todo_types">Categories</string>
+    <string name="todo_title">Title</string>
+    <string name="todo_title_hint">Edit title here.</string>
+    <string name="todo_description">Description</string>
+    <string name="todo_description_hint">Edit description here.(Optional)</string>
+    <string name="todo_time">Expected date</string>
+    <string name="todo_time_hint">Expected date of completion.</string>
+    <string name="todo_check">Check</string>
+    <!-- Add to do end -->
+
+    <!-- TodoList type start -->
+    <string name="type_love">Love</string>
+    <string name="type_study">Study</string>
+    <string name="type_work">Work</string>
+    <string name="type_life">Life</string>
+    <!-- TodoList type end -->
+
     <!-- Error start-->
     <string name="empty_text">There is nothing</string>
     <string name="error_user_name">UserName is not valid</string>
     <string name="error_password">Password is not valid</string>
     <string name="error_re_password">Not match</string>
+    <string name="error_title">Title is not valid</string>
     <!-- Error end -->
 </resources>

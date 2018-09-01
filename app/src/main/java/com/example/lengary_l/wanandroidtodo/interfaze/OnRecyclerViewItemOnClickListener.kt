@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroidtodo.data.source
+package com.example.lengary_l.wanandroidtodo.interfaze
 
-import com.example.lengary_l.wanandroidtodo.data.Status
-import com.example.lengary_l.wanandroidtodo.data.TodoData
+import android.view.View
 
 /**
  * Created by CoderLengary
  */
-interface TodoDataSource {
-
-    suspend fun getAllListByType(type: Int): Result<TodoData>
-
-    suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status>
-
-    suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
-
+interface OnRecyclerViewItemOnClickListener {
+    fun onItemClick(v: View, position: Int)
 }

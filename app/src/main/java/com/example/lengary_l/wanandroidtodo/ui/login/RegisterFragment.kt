@@ -94,20 +94,20 @@ class RegisterFragment : Fragment()  {
         })
 
         btnRegister.setOnClickListener {
-            val userName: String? = editUser.editableText.toString()
-            val passWord: String? = editPassword.editableText.toString()
-            val rePassword: String? = editRePassword.editableText.toString()
-            if (userName?.isNotValid()!!){
+            val userName: String = editUser.editableText.toString()
+            val passWord: String = editPassword.editableText.toString()
+            val rePassword: String = editRePassword.editableText.toString()
+            if (userName.isNotValid()){
                 inputLayoutUser.error = getString(R.string.error_user_name)
                 return@setOnClickListener
             }
 
-            if (passWord?.isNotValid()!!){
+            if (passWord.isNotValid()){
                 inputLayoutPassword.error = getString(R.string.error_password)
                 return@setOnClickListener
             }
 
-            if (rePassword?.isNotValid()!!){
+            if (rePassword.isNotValid()){
                 inputLayoutRePassword.error = getString(R.string.error_password)
                 return@setOnClickListener
             }

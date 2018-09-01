@@ -21,7 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/layout_background"
     android:scrollbarFadeDuration="1"
     android:scrollbars="vertical">
 

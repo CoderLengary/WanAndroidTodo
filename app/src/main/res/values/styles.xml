@@ -22,21 +22,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/iron_8B978B</item>
+        <item name="colorControlActivated">@color/iron_cfd4da</item>
+        <item name="colorControlHighlight">@color/iron_cfd4da</item>
         <item name="android:fontFamily">@font/product_family</item>
     </style>
 
 
     <style name="AppTheme.Login" parent="AppTheme">
-        <item name="fontFamily">@font/product_family</item>
-        <item name="colorPrimaryDark">@android:color/white</item>
-        <item name="colorControlNormal">@color/iron_8B978B</item>
-        <item name="colorControlActivated">@color/iron_cfd4da</item>
-        <item name="colorControlHighlight">@color/iron_cfd4da</item>
-        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/layout_background</item>
+        <item name="android:statusBarColor">@color/layout_background</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat"/>
 
 </resources>
