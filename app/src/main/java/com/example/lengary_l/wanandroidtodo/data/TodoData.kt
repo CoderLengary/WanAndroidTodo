@@ -51,7 +51,7 @@ data class TodoListData(
 data class TodoDetailData(
         @SerializedName("completeDate")
         @Expose
-        val completeDate: String,
+        val completeDate: Long,
 
         @SerializedName("completeDateStr")
         @Expose

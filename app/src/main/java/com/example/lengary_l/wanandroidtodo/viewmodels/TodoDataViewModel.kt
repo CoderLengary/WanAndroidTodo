@@ -19,7 +19,7 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
+import com.example.lengary_l.wanandroidtodo.data.TodoListData
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.data.source.Result
 import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
@@ -47,8 +47,8 @@ class TodoDataViewModel private constructor(
     }
 
     //Get
-    val liveTodoData = MutableLiveData<List<TodoDetailData>>()
-    val doneTodoData = MutableLiveData<List<TodoDetailData>>()
+    val liveTodoData = MutableLiveData<List<TodoListData>>()
+    val doneTodoData = MutableLiveData<List<TodoListData>>()
 
     //Submit
     val addStatusData = MutableLiveData<String>()
@@ -61,23 +61,14 @@ class TodoDataViewModel private constructor(
     fun changeTodoDataByType(type: TodoListType) {
 
         launchSilent(uiContext) {
-            val liveTodoList = ArrayList<TodoDetailData>()
-            val doneTodoList = ArrayList<TodoDetailData>()
+
             val result = mRepository.getAllListByType(type.value)
             if (result is Result.Success) {
-                result.data.data.allLiveList.forEach {
-                    liveTodoList.addAll(it.list)
-                }
+                liveTodoData.value = result.data.data.allLiveList
 
-                result.data.data.allDoneList.forEach {
-                    doneTodoList .addAll(it.list)
-                }
-                if (!liveTodoList.isEmpty()) {
-                    liveTodoData.value = liveTodoList
-                }
-                if (!doneTodoList.isEmpty()) {
-                    doneTodoData.value = doneTodoList
-                }
+                doneTodoData.value = result.data.data.allDoneList
+
+
             } else if(result is Result.Error) {
                 Log.e("error", result.exception.message)
             }

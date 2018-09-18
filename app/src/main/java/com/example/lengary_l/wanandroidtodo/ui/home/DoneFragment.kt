@@ -27,7 +27,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.lengary_l.wanandroidtodo.R
-import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
+import com.example.lengary_l.wanandroidtodo.data.TodoListData
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import kotlinx.android.synthetic.main.fragment_home_page.*
@@ -67,7 +67,7 @@ class DoneFragment: Fragment() {
                 adapter?.let {
                     it.updateData(list)
                 } ?: also {
-                    adapter = TodoAdapter(list as MutableList<TodoDetailData>)
+                    adapter = TodoAdapter(list as MutableList<TodoListData>)
                     recyclerView.adapter = adapter
 
                 }

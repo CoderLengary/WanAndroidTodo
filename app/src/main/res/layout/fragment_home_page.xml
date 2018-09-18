@@ -28,6 +28,6 @@
         android:layout_marginBottom="@dimen/card_vertical_margin_half"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_recyclerview"/>
+        tools:listitem="@layout/item_recyclerview_normal"/>
 
 </LinearLayout>

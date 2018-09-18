@@ -29,7 +29,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
-import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
+import com.example.lengary_l.wanandroidtodo.data.TodoListData
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
 import com.example.lengary_l.wanandroidtodo.util.changeToListType
@@ -69,11 +69,13 @@ class TodoFragment : Fragment() {
             it?.let { list ->
                 val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
                 if (adapter == null) {
-                    adapter = TodoAdapter(list as MutableList<TodoDetailData>)
+                    adapter = TodoAdapter(list as MutableList<TodoListData>)
                     adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
                         override fun onItemClick(v: View, position: Int) {
-                            val item = list[position]
-                            mViewModel.updateTodo(item.id, item.title, item.content, item.dateStr, 1, item.type.changeToListType())
+                            val item = adapter?.getContentByPosition(position)
+                            item?.let {
+                                mViewModel.updateTodo(it.id, it.title, it.content, it.dateStr, 1, it.type.changeToListType())
+                            }
                         }
                     })
                     recyclerView.adapter = adapter

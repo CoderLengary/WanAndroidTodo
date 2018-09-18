@@ -26,6 +26,7 @@
         <item name="colorControlActivated">@color/iron_cfd4da</item>
         <item name="colorControlHighlight">@color/iron_cfd4da</item>
         <item name="android:fontFamily">@font/product_family</item>
+        <item name="preferenceTheme">@style/MaterialPreferenceTheme</item>
     </style>
 
 
@@ -36,6 +37,16 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+
+    <style name="MaterialPreferenceTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarFadeDuration">1</item>
+        <item name="android:background">@color/layout_background</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

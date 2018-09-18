@@ -38,6 +38,7 @@
     <!-- Home start -->
     <string name="home_todo">Todo</string>
     <string name="home_done">Done</string>
+    <string name="home_complete_date">Complete date: </string>
     <!-- Home end -->
 
     <!-- Add to do start -->
@@ -50,6 +51,30 @@
     <string name="todo_time_hint">Expected date of completion.</string>
     <string name="todo_check">Check</string>
     <!-- Add to do end -->
+
+    <!-- Settings start -->
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_rate">Rate</string>
+    <string name="settings_rate_desc">If you like this app, please do rate it.</string>
+    <string name="settings_licenses">Licenses</string>
+    <string name="settings_thanks">Thanks</string>
+    <string name="settings_lizhaotailang">Li Zhao Tai Lang</string>
+    <string name="settings_lizhaotailang_desc">Appreciate his help very much</string>
+    <string name="settings_lizhaotailang_link">https://github.com/TonnyL</string>
+    <string name="settings_hongyang">Hong Yang</string>
+    <string name="settings_hongyang_desc">API provider</string>
+    <string name="settings_hongyang_link">https://github.com/hongyangAndroid</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_source_code">GitHub Source code</string>
+    <string name="settings_source_code_link">https://github.com/CoderLengary/WanAndroidTodo</string>
+    <string name="settings_send_advices">Send advices</string>
+    <string name="settings_send_advices_desc">Help me improve this app</string>
+    <string name="settings_mail_account">mailto:719952215@qq.com</string>
+    <string name="settings_device_model">Device Version:</string>
+    <string name="settings_mail_topic">WanAndroid Advices</string>
+    <string name="settings_sdk_version">SDK Version:</string>
+    <!-- Settings end -->
 
     <!-- TodoList type start -->
     <string name="type_love">Love</string>
@@ -64,5 +89,8 @@
     <string name="error_password">Password is not valid</string>
     <string name="error_re_password">Not match</string>
     <string name="error_title">Title is not valid</string>
+    <string name="error_no_browser_found">No browser found</string>
+    <string name="error_no_mail_app">No email app found</string>
+    <string name="error">Something wrong</string>
     <!-- Error end -->
 </resources>
