@@ -22,13 +22,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.lengary_l.wanandroidtodo.R
-import com.example.lengary_l.wanandroidtodo.data.TodoListData
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
@@ -42,7 +42,7 @@ class DoneFragment: Fragment() {
     }
 
     private val mFactory by lazy {
-        Injection.provideTodoDataViewModelFactory()
+        Injection.provideTodoDataViewModelFactory(context!!)
     }
 
     private val mViewModel by lazy {
@@ -60,19 +60,31 @@ class DoneFragment: Fragment() {
 
     private fun subscribeUi(recyclerView: RecyclerView) {
         var adapter: TodoAdapter?= null
-        Log.e("Done", mViewModel.toString())
-        mViewModel.doneTodoData.observe(viewLifecycleOwner, Observer {
+
+        mViewModel.doneTodoList.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
+                recyclerView.visibility = View.VISIBLE
+                empty_layout.visibility = View.GONE
+                if (adapter == null) {
+                    adapter = TodoAdapter(list as MutableList<TodoDetailData>)
+                    adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener {
+                        override fun onItemClick(v: View, position: Int) {
 
-                adapter?.let {
-                    it.updateData(list)
-                } ?: also {
-                    adapter = TodoAdapter(list as MutableList<TodoListData>)
+                        }
+                    })
                     recyclerView.adapter = adapter
-
+                }else {
+                    adapter?.updateData(list)
                 }
             }
 
+        })
+
+        mViewModel.doneTodoListError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                recyclerView.visibility = View.INVISIBLE
+                empty_layout.visibility = View.VISIBLE
+            }
         })
     }
 

@@ -91,15 +91,7 @@
                     android:text="@{todo.content}"
                     tools:text="电子的运动是无规律的，它以概率波的形式运动，你无法准确地预料到电子将会出现在哪一个位置" />
 
-                <TextView
-                    android:id="@+id/textCompletedDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_margin_half"
-                    android:textColor="@color/colorSecondaryText"
-                    app:visibleFromStatus = "@{todo.status}"
-                    android:text="@{@string/home_complete_date+todo.completeDateStr}"
-                    tools:text="Complete date: 2019:02:14" />
+
             </LinearLayout>
 
             <ImageView

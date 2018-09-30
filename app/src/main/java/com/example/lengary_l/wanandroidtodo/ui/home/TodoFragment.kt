@@ -22,17 +22,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
-import com.example.lengary_l.wanandroidtodo.data.TodoListData
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
-import com.example.lengary_l.wanandroidtodo.util.changeToListType
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
@@ -46,7 +42,7 @@ class TodoFragment : Fragment() {
     }
 
     private val mFactory by lazy {
-        Injection.provideTodoDataViewModelFactory()
+        Injection.provideTodoDataViewModelFactory(context!!)
     }
 
     private val mViewModel by lazy {
@@ -64,34 +60,31 @@ class TodoFragment : Fragment() {
 
     private fun subscribeUi(recyclerView: RecyclerView) {
         var adapter: TodoAdapter? = null
-        Log.e("Todo", mViewModel.toString())
-        mViewModel.liveTodoData.observe(viewLifecycleOwner, Observer {
+
+        mViewModel.liveTodoList.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
-                val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
+                recyclerView.visibility = View.VISIBLE
+                empty_layout.visibility = View.GONE
                 if (adapter == null) {
-                    adapter = TodoAdapter(list as MutableList<TodoListData>)
+                    adapter = TodoAdapter(list as MutableList<TodoDetailData>)
                     adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
                         override fun onItemClick(v: View, position: Int) {
-                            val item = adapter?.getContentByPosition(position)
-                            item?.let {
-                                mViewModel.updateTodo(it.id, it.title, it.content, it.dateStr, 1, it.type.changeToListType())
-                            }
+
                         }
                     })
                     recyclerView.adapter = adapter
-                    recyclerView.layoutAnimation = controller
                 }else {
                     adapter?.updateData(list)
                 }
             }
         })
 
-        mViewModel.updateStatusData.observe(viewLifecycleOwner, Observer {
+        mViewModel.liveTodoListError.observe(viewLifecycleOwner, Observer {
             it?.let {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                recyclerView.visibility = View.INVISIBLE
+                empty_layout.visibility = View.VISIBLE
             }
         })
-
 
 
     }

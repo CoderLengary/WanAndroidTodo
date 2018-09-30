@@ -18,6 +18,7 @@ package com.example.lengary_l.wanandroidtodo.data.source
 
 import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 
 /**
  * Created by CoderLengary
@@ -29,5 +30,18 @@ interface TodoDataSource {
     suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status>
 
     suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
+
+    suspend fun saveTodo(data: TodoData)
+
+    suspend fun insertTodoDetailData(data: TodoDetailData)
+
+    suspend fun deleteTodo(id: Int)
+
+    suspend fun clearAll()
+
+    suspend fun getAllByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>>
+
+
+
 
 }

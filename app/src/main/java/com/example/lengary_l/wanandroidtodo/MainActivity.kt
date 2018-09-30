@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolBar)
+
         initFragments(savedInstanceState)
         showFragment(mHomeFragment)
         buttomNavView.setOnNavigationItemSelectedListener {

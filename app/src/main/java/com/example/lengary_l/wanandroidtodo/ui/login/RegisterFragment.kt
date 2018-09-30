@@ -23,13 +23,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.lengary_l.wanandroidtodo.MainActivity
 import com.example.lengary_l.wanandroidtodo.R
+import com.example.lengary_l.wanandroidtodo.WelcomeActivity
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
@@ -61,7 +60,6 @@ class RegisterFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("RegisterFragment", "onViewCreated")
         linkToLogin.setOnClickListener {
             (activity as LoginActivity).showFragment(FragmentType.LOGIN)
         }
@@ -123,14 +121,14 @@ class RegisterFragment : Fragment()  {
     }
 
     private fun subscribeUi() {
-        Log.e("Register", "subscribeUi")
+
         mViewModel.registerData.observe(viewLifecycleOwner, Observer {
             if (it?.errorCode != 0){
                 inputLayoutUser.error = it?.errorMsg
             }else {
-                Log.e("RegisterFragment", it.data.toString())
+
                 SharedPreferencesUtils.putUserId(id = it.data.id)
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, WelcomeActivity::class.java)
                 startActivity(intent)
             }
         })
@@ -140,9 +138,6 @@ class RegisterFragment : Fragment()  {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("RegisterFragment", "onDestroy")
-    }
+
 
 }

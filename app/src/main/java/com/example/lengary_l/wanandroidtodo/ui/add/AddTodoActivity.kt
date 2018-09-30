@@ -49,7 +49,7 @@ class AddTodoActivity: AppCompatActivity() {
     private lateinit var selectTime: String
 
     private val mFactory by lazy {
-        Injection.provideTodoDataViewModelFactory()
+        Injection.provideTodoDataViewModelFactory(this)
     }
 
     private val mViewModel by lazy {
@@ -64,7 +64,7 @@ class AddTodoActivity: AppCompatActivity() {
         setSupportActionBar(toolBar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
+            setHomeAsUpIndicator(R.drawable.ic_close_white_24dp)
         }
         initTimePicker()
         subscribeUi()

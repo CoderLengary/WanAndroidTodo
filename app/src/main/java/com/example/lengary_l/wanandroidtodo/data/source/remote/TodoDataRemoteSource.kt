@@ -18,6 +18,7 @@ package com.example.lengary_l.wanandroidtodo.data.source.remote
 
 import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.data.source.RemoteException
 import com.example.lengary_l.wanandroidtodo.data.source.Result
 import com.example.lengary_l.wanandroidtodo.data.source.TodoDataSource
@@ -121,4 +122,28 @@ class TodoDataRemoteSource private constructor(
         }
     }
 
+
+
+
+
+    override suspend fun insertTodoDetailData(data: TodoDetailData) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteTodo(id: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun clearAll() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun getAllByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    override suspend fun saveTodo(data: TodoData) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

@@ -16,7 +16,7 @@
 
 <resources>
     <string name="app_name">Todo</string>
-    
+
     <!-- Login start -->
     <string name="login_title">Todo-List.</string>
     <string name="login_title_desc">Complete a plan every day</string>
@@ -39,6 +39,10 @@
     <string name="home_todo">Todo</string>
     <string name="home_done">Done</string>
     <string name="home_complete_date">Complete date: </string>
+    <string name="home_alert_dialog_title">Warning</string>
+    <string name="home_alert_dialog_content">No network, could not load any data for you</string>
+    <string name="home_alert_dialog_positive">Refresh</string>
+    <string name="home_alert_dialog_negative">Close App</string>
     <!-- Home end -->
 
     <!-- Add to do start -->
@@ -93,4 +97,6 @@
     <string name="error_no_mail_app">No email app found</string>
     <string name="error">Something wrong</string>
     <!-- Error end -->
+
+
 </resources>

@@ -15,40 +15,166 @@
   ~ limitations under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
+    <data>
+        <variable
+            name="year"
+            type="String"/>
+        <variable
+            name="monthDay"
+            type="String"/>
+        <variable
+            name="currentDay"
+            type="String"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
+
+        <LinearLayout
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_margin_half">
+
+                <TextView
+                    android:id="@+id/textMonthDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:text="@{monthDay}"
+                    tools:text="08/29"/>
+
+                <TextView
+                    android:paddingBottom="6dp"
+                    android:layout_alignBottom="@+id/textMonthDay"
+                    android:layout_marginLeft="@dimen/activity_margin_half"
+                    android:layout_toRightOf="@+id/textMonthDay"
+                    android:layout_toLeftOf="@+id/currentCalenderLayout"
+                    android:id="@+id/textYear"
+                    tools:text="2018"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{year}"/>
+
+                <FrameLayout
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/textMonthDay"
+                    android:id="@+id/currentCalenderLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/ic_calendar"
+                        android:tint="#000000" />
+
+                    <TextView
+                        android:id="@+id/textCurrentDay"
+                        android:layout_marginTop="2dp"
+                        tools:text="26"
+                        android:text="@{currentDay}"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <com.haibin.calendarview.CalendarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                app:default_status="shrink"
+                app:calendar_content_view_id="@+id/calendarContentLayout">
+                <com.haibin.calendarview.CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    app:calendar_padding="10dp"
+                    app:month_view="com.example.lengary_l.wanandroidtodo.calender.SimpleMonthView"
+                    app:calendar_height="46dp"
+
+                    app:current_month_text_color="#333333"
+                    app:min_year="2004"
+                    app:other_month_text_color="#e1e1e1"
+
+                    app:selected_text_color="#fff"
+                    app:selected_theme_color="#ff0000"
+                    app:week_background="@color/colorPrimary"
+                    app:week_text_color="#111"
+                    app:week_view="com.example.lengary_l.wanandroidtodo.calender.SimpleWeekView"
+                    app:year_view_day_text_color="#333333"
+                    app:year_view_day_text_size="9sp"
+                    app:year_view_month_text_color="#ff0000"
+                    app:year_view_month_text_size="20sp"
+                    app:month_view_show_mode="mode_only_current"
+                    app:year_view_scheme_color="#f17706"/>
+
+                <LinearLayout
+                    android:background="@color/layout_background"
+                    android:id="@+id/calendarContentLayout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tabGravity="fill"
+                        app:tabBackground="@color/colorPrimary"
+                        app:tabIndicatorColor="@color/colorAccent"
+                        app:tabSelectedTextColor="@color/colorAccent"
+                        app:tabTextColor="@color/colorPrimaryText" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                </LinearLayout>
+            </com.haibin.calendarview.CalendarLayout>
+        </LinearLayout>
+
+        <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+            android:id="@+id/overLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:clickable_overlay="true" />
+
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="2dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabBackground="@color/colorPrimary"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextColor="@color/colorPrimaryText" />
-    </android.support.design.widget.AppBarLayout>
+            app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
+            app:sdExpansionMode="top"
+            app:sdMainFabAnimationRotateAngle="90"
+            app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
+            app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
+            app:sdOverlayLayout="@id/overLayout"
+            />
 
+    </android.support.design.widget.CoordinatorLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_gravity="bottom|end"
-        app:srcCompat="@drawable/ic_add_white_24dp"
-        android:backgroundTint="@color/colorAccent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_vertical_margin"/>
-</android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -19,7 +19,7 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.example.lengary_l.wanandroidtodo.data.TodoListData
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.data.source.Result
 import com.example.lengary_l.wanandroidtodo.data.source.TodoDataRepository
@@ -46,32 +46,94 @@ class TodoDataViewModel private constructor(
         }
     }
 
+    var i = 0
+
     //Get
-    val liveTodoData = MutableLiveData<List<TodoListData>>()
-    val doneTodoData = MutableLiveData<List<TodoListData>>()
+    val getAllTodoError = MutableLiveData<Int>()
+
+    val liveTodoList = MutableLiveData<List<TodoDetailData>>()
+    val doneTodoList = MutableLiveData<List<TodoDetailData>>()
+    val liveTodoListError = MutableLiveData<Int>()
+    val doneTodoListError = MutableLiveData<Int>()
 
     //Submit
     val addStatusData = MutableLiveData<String>()
     val updateType = MutableLiveData<TodoListType>()
 
-    //Update
-    val updateStatusData = MutableLiveData<String>()
+    val pointDateMap = HashMap<String, Int>()
+
+    fun changeTodoDataByDate(dateStr: String) {
+
+        launchSilent(uiContext) {
+            val liveResult = mRepository.getAllByDateAndStatus(dateStr, 0)
+            if (liveResult is Result.Success) {
+                liveTodoList.value = liveResult.data
+            }else {
+                liveTodoListError.value = i++
+            }
+
+            val doneResult = mRepository.getAllByDateAndStatus(dateStr, 1)
+            if (doneResult is Result.Success) {
+                doneTodoList.value = doneResult.data
+            }else {
+                Log.e("status = 1","error currentdate is "+dateStr)
+                doneTodoListError.value = i++
+            }
+        }
+    }
 
 
-    fun changeTodoDataByType(type: TodoListType) {
+
+
+    private fun getTodoDataByType(type: TodoListType) {
 
         launchSilent(uiContext) {
 
             val result = mRepository.getAllListByType(type.value)
             if (result is Result.Success) {
-                liveTodoData.value = result.data.data.allLiveList
 
-                doneTodoData.value = result.data.data.allDoneList
+                val liveList = result.data.data.allLiveList
+                for (todoListData in liveList) {
+                    for (todoDetailData in todoListData.list) {
+                        val dateStr = todoDetailData.dateStr
+                        if (pointDateMap.containsKey(dateStr)) {
+                            pointDateMap[dateStr] = pointDateMap[dateStr]!! + 1
+                        }else {
+                            pointDateMap[dateStr] = 1
+                        }
+                    }
+                }
+
+                val doneList = result.data.data.allDoneList
+                for (todoListData in doneList) {
+                    for (todoDetailData in todoListData.list) {
+                        val dateStr = todoDetailData.dateStr
+                        if (pointDateMap.containsKey(dateStr)) {
+                            pointDateMap[dateStr] = pointDateMap[dateStr]!! + 1
+                        }else {
+                            pointDateMap[dateStr] = 1
+                        }
+                    }
+                }
 
 
-            } else if(result is Result.Error) {
-                Log.e("error", result.exception.message)
             }
+            if (result is Result.Error) {
+                getAllTodoError.value = i++
+            }
+        }
+    }
+
+    fun getAllByRemote() {
+        getTodoDataByType(TodoListType.LOVE)
+        getTodoDataByType(TodoListType.STUDY)
+        getTodoDataByType(TodoListType.WORK)
+        getTodoDataByType(TodoListType.LIFE)
+    }
+
+    fun clearAll() {
+        launchSilent(uiContext) {
+            mRepository.clearAll()
         }
     }
 
@@ -96,20 +158,6 @@ class TodoDataViewModel private constructor(
         addStatusData.value = null
     }
 
-    fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: TodoListType) {
-
-        launchSilent(uiContext) {
-            val result = mRepository.updateTodo(id, title, content, date, status, type.value)
-            if (result is Result.Success) {
-                updateStatusData.value = SUCCESS_MSG
-
-                //When we complete a todo_data, update the {addType}, one of the observers{ @link HomeFragment } will receive it.
-                updateType.value = type
-            }else if (result is Result.Error) {
-                updateStatusData.value = result.exception.message
-            }
-        }
-    }
 
 
 

@@ -23,14 +23,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import com.example.lengary_l.wanandroidtodo.MainActivity
 import com.example.lengary_l.wanandroidtodo.R
+import com.example.lengary_l.wanandroidtodo.WelcomeActivity
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
@@ -62,7 +61,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("LoginFragment", "onViewCreated")
         with(context){
             val translateAnimation = AnimationUtils.loadAnimation(this, R.anim.down_in)
             linear_layout?.startAnimation(translateAnimation)
@@ -112,14 +110,12 @@ class LoginFragment : Fragment() {
     }
 
     private fun subscribeUi() {
-        Log.e("Login", "subscribeUi")
         mViewModel.loginData.observe(viewLifecycleOwner, Observer {
             if (it?.errorCode != 0){
                 inputLayoutPassword.error = it?.errorMsg
             }else {
-                Log.e("LoginFragment", it.data.toString())
                 SharedPreferencesUtils.putUserId(id = it.data.id)
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, WelcomeActivity::class.java)
                 startActivity(intent)
             }
         })
@@ -130,10 +126,7 @@ class LoginFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("LoginFragment", "onDestroy")
-    }
+
 
 
 
