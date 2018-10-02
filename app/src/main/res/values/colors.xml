@@ -28,10 +28,14 @@
     <color name="iron_cfd4da">#cfd4da</color>
     <color name="iron_8B978B">#8B978B</color>
     <color name="iron_a5a5a5">#a5a5a5</color>
+    <color name="iron_f0eeee">#f0eeee</color>
 
     <color name="green_00d092">#00d092</color>
 
     <color name="orange_fda70f">#fda70f</color>
+    <color name="orange_ff5722">#ff5722</color>
+
+    <color name="pink_ed7899">#ed7899</color>
 
     <color name="layout_background">#fafafa</color>
 
@@ -42,6 +46,10 @@
     <color name="brown_6D4C41">#6D4C41</color>
 
     <color name="blue_2196F3">#2196F3</color>
+    <color name="blue_cbded6">#cbded6</color>
 
     <color name="yellow_FFEB3B">#FFEB3B</color>
+    <color name="yellow_fcca3d">#fcca3d</color>
+
+    <color name="black">@android:color/black</color>
 </resources>

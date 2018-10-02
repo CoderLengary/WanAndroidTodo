@@ -116,6 +116,7 @@ class LoginFragment : Fragment() {
             }else {
                 SharedPreferencesUtils.putUserId(id = it.data.id)
                 val intent = Intent(context, WelcomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         })

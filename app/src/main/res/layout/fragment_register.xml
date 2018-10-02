@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center_horizontal"
-                android:text="@string/login_link_to_sign_up"
+                android:text="@string/login_link_to_sign_in"
                 android:textColor="@color/orange_fda70f" />
 
             <android.support.v7.widget.AppCompatButton

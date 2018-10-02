@@ -18,7 +18,9 @@ package com.example.lengary_l.wanandroidtodo.util
 
 import android.databinding.BindingAdapter
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
@@ -30,20 +32,31 @@ import com.example.lengary_l.wanandroidtodo.data.TodoListType
 @BindingAdapter("imageFromType")
 fun bindImageFromType(view: ImageView, type: Int) {
     when(type) {
-        TodoListType.LOVE.value -> view.setImageResource(R.drawable.ic_favorite_white_24dp)
-        TodoListType.WORK.value -> view.setImageResource(R.drawable.ic_work_white_24dp)
-        TodoListType.STUDY.value -> view.setImageResource(R.drawable.ic_book_white_24dp)
-        TodoListType.LIFE.value -> view.setImageResource(R.drawable.ic_brightness_4_white_24dp)
+        TodoListType.LOVE.value -> view.setImageResource(R.mipmap.ic_love_100)
+        TodoListType.WORK.value -> view.setImageResource(R.mipmap.ic_work_100)
+        TodoListType.STUDY.value -> view.setImageResource(R.mipmap.ic_books_100)
+        TodoListType.LIFE.value -> view.setImageResource(R.mipmap.ic_life_100)
     }
 }
 
-@BindingAdapter("imageBGFromType")
-fun bindImageBackGroundFromType(view: ImageView, type: Int) {
+@BindingAdapter("layoutBGFromType")
+fun bindLayoutBackGroundFromType(view: LinearLayout, type: Int) {
+
     when(type) {
-        TodoListType.LOVE.value -> view.setImageResource(R.color.red_f44336)
-        TodoListType.WORK.value -> view.setImageResource(R.color.brown_6D4C41)
-        TodoListType.STUDY.value -> view.setImageResource(R.color.blue_2196F3)
-        TodoListType.LIFE.value -> view.setImageResource(R.color.yellow_FFEB3B)
+        TodoListType.LOVE.value -> view.setBackgroundResource(R.color.pink_ed7899)
+        TodoListType.WORK.value -> view.setBackgroundResource(R.color.blue_cbded6)
+        TodoListType.STUDY.value -> view.setBackgroundResource(R.color.yellow_fcca3d)
+        TodoListType.LIFE.value -> view.setBackgroundResource(R.color.orange_ff5722)
+    }
+}
+
+@BindingAdapter("btnTextColorFromType")
+fun bindButtonTextColorFromType(view: Button, type: Int) {
+    when(type) {
+        TodoListType.LOVE.value -> view.setTextColor(view.context.getColor(R.color.pink_ed7899))
+        TodoListType.WORK.value -> view.setTextColor(view.context.getColor(R.color.blue_cbded6))
+        TodoListType.STUDY.value -> view.setTextColor(view.context.getColor(R.color.yellow_fcca3d))
+        TodoListType.LIFE.value -> view.setTextColor(view.context.getColor(R.color.orange_ff5722))
     }
 }
 

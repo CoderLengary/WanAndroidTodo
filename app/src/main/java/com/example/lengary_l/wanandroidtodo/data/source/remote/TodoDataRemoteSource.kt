@@ -55,7 +55,7 @@ class TodoDataRemoteSource private constructor(
         retrofit.create(RetrofitService.TodoService::class.java)
     }
 
-    override suspend fun getAllListByType(type: Int): Result<TodoData> = withContext(mAppExecutors.ioContext){
+    override suspend fun getRemoteDataByType(type: Int): Result<TodoData> = withContext(mAppExecutors.ioContext){
         try {
             val response = mTodoService.getAllListByType(type).execute()
 
@@ -126,7 +126,7 @@ class TodoDataRemoteSource private constructor(
 
 
 
-    override suspend fun insertTodoDetailData(data: TodoDetailData) {
+    override suspend fun insertTodo(data: TodoDetailData) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -134,16 +134,16 @@ class TodoDataRemoteSource private constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun clearAll() {
+    override suspend fun clearAllTodo() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getAllByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> {
+    override suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override suspend fun saveTodo(data: TodoData) {
+    override suspend fun saveAllTodo(data: TodoData) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

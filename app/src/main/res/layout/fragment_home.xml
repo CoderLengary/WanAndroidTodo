@@ -119,7 +119,7 @@
                     app:other_month_text_color="#e1e1e1"
 
                     app:selected_text_color="#fff"
-                    app:selected_theme_color="#ff0000"
+                    app:selected_theme_color="#111"
                     app:week_background="@color/colorPrimary"
                     app:week_text_color="#111"
                     app:week_view="com.example.lengary_l.wanandroidtodo.calender.SimpleWeekView"
@@ -170,6 +170,8 @@
             app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
             app:sdExpansionMode="top"
             app:sdMainFabAnimationRotateAngle="90"
+            app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
+            app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
             app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
             app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
             app:sdOverlayLayout="@id/overLayout"

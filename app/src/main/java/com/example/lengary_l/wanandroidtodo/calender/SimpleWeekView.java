@@ -17,8 +17,8 @@
 package com.example.lengary_l.wanandroidtodo.calender;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
@@ -33,25 +33,15 @@ import com.haibin.calendarview.WeekView;
 public class SimpleWeekView extends WeekView {
     private int mRadius;
 
-    private float mPointRadius;
-    private Paint mPointPaint = new Paint();
 
-    private int mPadding;
 
     public SimpleWeekView(Context context) {
         super(context);
         setLayerType(View.LAYER_TYPE_SOFTWARE,mSelectedPaint);
         //4.0以上硬件加速会导致无效
-        //mSelectedPaint.setMaskFilter(new BlurMaskFilter(25, BlurMaskFilter.Blur.SOLID));
+        mSelectedPaint.setMaskFilter(new BlurMaskFilter(15, BlurMaskFilter.Blur.SOLID));
 
-        mPointPaint.setAntiAlias(true);
-        mPointPaint.setStyle(Paint.Style.FILL);
-        mPointPaint.setTextAlign(Paint.Align.CENTER);
-        mPointPaint.setColor(Color.RED);
 
-        mPadding = dipToPx(getContext(), 3);
-
-        mPointRadius = dipToPx(context, 2);
     }
 
     @Override
@@ -70,14 +60,9 @@ public class SimpleWeekView extends WeekView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        boolean isSelected = isSelected(calendar);
-        if (isSelected) {
-            mPointPaint.setColor(Color.WHITE);
-        } else {
-            mPointPaint.setColor(Color.RED);
-        }
-
-        canvas.drawCircle(x + mItemWidth / 2, mItemHeight - 3 * mPadding, mPointRadius, mPointPaint);
+        int cx = x + mItemWidth / 2;
+        int cy = mItemHeight / 2;
+        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
     }
 
     @Override
@@ -103,8 +88,5 @@ public class SimpleWeekView extends WeekView {
         }
     }
 
-    private static int dipToPx(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
+
 }

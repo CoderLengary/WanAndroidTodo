@@ -39,6 +39,10 @@
     <string name="home_todo">Todo</string>
     <string name="home_done">Done</string>
     <string name="home_complete_date">Complete date: </string>
+
+    <string name="home_custom_alert_dialog_title_hint">Enter the title here</string>
+    <string name="home_custom_alert_dialog_content_hint">Enter your content here</string>
+
     <string name="home_alert_dialog_title">Warning</string>
     <string name="home_alert_dialog_content">No network, could not load any data for you</string>
     <string name="home_alert_dialog_positive">Refresh</string>

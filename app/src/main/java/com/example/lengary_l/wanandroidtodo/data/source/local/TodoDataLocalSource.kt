@@ -16,7 +16,6 @@
 
 package com.example.lengary_l.wanandroidtodo.data.source.local
 
-import android.util.Log
 import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
 import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
@@ -36,26 +35,23 @@ class TodoDataLocalSource private constructor(
 
 
 
-
-
-    override suspend fun insertTodoDetailData(data: TodoDetailData) {
+    override suspend fun insertTodo(data: TodoDetailData) {
         withContext(mAppExecutors.ioContext) {
             mTodoDetailDataDao.insertTodoDetailData(data)
         }
     }
 
 
-    override suspend fun getAllByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> =
+    override suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> =
         withContext(mAppExecutors.ioContext) {
             val result = mTodoDetailDataDao.queryAllByDateAndStatus(dateStr, status)
-            Log.e("status = 1: ", "date is "+dateStr +" length is "+result.size + " status is "+status)
             if (!result.isEmpty()) Result.Success(result) else Result.Error(RemoteException())
         }
 
 
 
 
-    override suspend fun clearAll() {
+    override suspend fun clearAllTodo() {
          withContext(mAppExecutors.ioContext) {
              val result = mTodoDetailDataDao.queryAll()
              if (!result.isEmpty()) mTodoDetailDataDao.deleteAll(result)
@@ -83,7 +79,7 @@ class TodoDataLocalSource private constructor(
     }
 
 
-    override suspend fun saveTodo(data: TodoData) {
+    override suspend fun saveAllTodo(data: TodoData) {
         withContext(mAppExecutors.ioContext) {
             val liveList = data.data.allLiveList
 
@@ -103,7 +99,7 @@ class TodoDataLocalSource private constructor(
         }
     }
 
-    override suspend fun getAllListByType(type: Int): Result<TodoData> {
+    override suspend fun getRemoteDataByType(type: Int): Result<TodoData> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

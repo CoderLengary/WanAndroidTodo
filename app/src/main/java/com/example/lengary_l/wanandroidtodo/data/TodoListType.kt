@@ -21,7 +21,7 @@ package com.example.lengary_l.wanandroidtodo.data
  */
 enum class TodoListType(val value: Int) {
     LOVE(0),
-    LIFE(1),
-    WORK(2),
-    STUDY(3)
+    WORK(1),
+    STUDY(2),
+    LIFE(3)
 }

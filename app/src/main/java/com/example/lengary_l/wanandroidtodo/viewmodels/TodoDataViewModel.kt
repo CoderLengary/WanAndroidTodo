@@ -18,7 +18,6 @@ package com.example.lengary_l.wanandroidtodo.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.data.source.Result
@@ -65,31 +64,32 @@ class TodoDataViewModel private constructor(
     fun changeTodoDataByDate(dateStr: String) {
 
         launchSilent(uiContext) {
-            val liveResult = mRepository.getAllByDateAndStatus(dateStr, 0)
+            val liveResult = mRepository.getLocalDataByDateAndStatus(dateStr, 0)
             if (liveResult is Result.Success) {
                 liveTodoList.value = liveResult.data
             }else {
                 liveTodoListError.value = i++
             }
 
-            val doneResult = mRepository.getAllByDateAndStatus(dateStr, 1)
+            val doneResult = mRepository.getLocalDataByDateAndStatus(dateStr, 1)
             if (doneResult is Result.Success) {
                 doneTodoList.value = doneResult.data
             }else {
-                Log.e("status = 1","error currentdate is "+dateStr)
                 doneTodoListError.value = i++
             }
         }
     }
 
-
-
-
+    fun getAllByRemote() {
+        getTodoDataByType(TodoListType.LOVE)
+        getTodoDataByType(TodoListType.STUDY)
+        getTodoDataByType(TodoListType.WORK)
+        getTodoDataByType(TodoListType.LIFE)
+    }
     private fun getTodoDataByType(type: TodoListType) {
 
         launchSilent(uiContext) {
-
-            val result = mRepository.getAllListByType(type.value)
+            val result = mRepository.getRemoteDataByType(type.value)
             if (result is Result.Success) {
 
                 val liveList = result.data.data.allLiveList
@@ -123,22 +123,16 @@ class TodoDataViewModel private constructor(
             }
         }
     }
-
-    fun getAllByRemote() {
-        getTodoDataByType(TodoListType.LOVE)
-        getTodoDataByType(TodoListType.STUDY)
-        getTodoDataByType(TodoListType.WORK)
-        getTodoDataByType(TodoListType.LIFE)
-    }
-
     fun clearAll() {
         launchSilent(uiContext) {
-            mRepository.clearAll()
+            mRepository.clearAllTodo()
         }
     }
 
+
     fun submitTodo(title: String, content: String, date: String, type: TodoListType) {
 
+        //Actually, if we submit the todoData successfully, the data will be inserted into database
         launchSilent(uiContext) {
             val result = mRepository.submitTodo(title, content, date, type.value)
 

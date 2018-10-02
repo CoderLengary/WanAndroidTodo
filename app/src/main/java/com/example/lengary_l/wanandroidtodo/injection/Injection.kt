@@ -35,11 +35,11 @@ object Injection {
     private val mAppExecutors = AppExecutors()
 
     private fun getLoginDataRepository(context: Context): LoginDataRepository =
-            LoginDataRepository.getInstance(LoginDataRemoteSource.getInstance(mAppExecutors), LoginDataLocalSource.getInstance(mAppExecutors, AppDatabase.getInstance(context).LoginDetailDataDao()))
+            LoginDataRepository.getInstance(LoginDataRemoteSource.getInstance(mAppExecutors), LoginDataLocalSource.getInstance(mAppExecutors, AppDatabase.getInstance(context).loginDetailDataDao()))
 
     private fun getTodoDataRepository(context: Context): TodoDataRepository =
             TodoDataRepository.getInstance(TodoDataRemoteSource.getInstance(mAppExecutors),
-                    TodoDataLocalSource.getInstance(mAppExecutors, AppDatabase.getInstance(context).TodoDetailDataDao()))
+                    TodoDataLocalSource.getInstance(mAppExecutors, AppDatabase.getInstance(context).todoDetailDataDao()))
 
     fun provideLoginDataViewModelFactory(context: Context): LoginDataViewModelFactory {
         val mLoginDataRepository = getLoginDataRepository(context)

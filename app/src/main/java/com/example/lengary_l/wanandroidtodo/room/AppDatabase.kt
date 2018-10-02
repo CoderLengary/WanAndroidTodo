@@ -16,8 +16,8 @@ import com.example.lengary_l.wanandroidtodo.room.dao.TodoDetailDataDao
         entities = [LoginDetailData::class, TodoDetailData::class], version = 1, exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun LoginDetailDataDao(): LoginDetailDataDao
-    abstract fun TodoDetailDataDao(): TodoDetailDataDao
+    abstract fun loginDetailDataDao(): LoginDetailDataDao
+    abstract fun todoDetailDataDao(): TodoDetailDataDao
     companion object {
         private const val DATABASE_NAME = "wan-android-db"
 

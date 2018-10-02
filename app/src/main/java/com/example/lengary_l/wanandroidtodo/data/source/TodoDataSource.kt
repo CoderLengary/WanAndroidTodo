@@ -25,21 +25,21 @@ import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
  */
 interface TodoDataSource {
 
-    suspend fun getAllListByType(type: Int): Result<TodoData>
+    suspend fun getRemoteDataByType(type: Int): Result<TodoData>
 
     suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status>
 
     suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
 
-    suspend fun saveTodo(data: TodoData)
+    suspend fun saveAllTodo(data: TodoData)
 
-    suspend fun insertTodoDetailData(data: TodoDetailData)
+    suspend fun insertTodo(data: TodoDetailData)
 
     suspend fun deleteTodo(id: Int)
 
-    suspend fun clearAll()
+    suspend fun clearAllTodo()
 
-    suspend fun getAllByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>>
+    suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>>
 
 
 

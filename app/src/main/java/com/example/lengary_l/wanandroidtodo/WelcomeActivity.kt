@@ -42,6 +42,7 @@ class WelcomeActivity : AppCompatActivity() {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 val intent = Intent(this@WelcomeActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
         }, 5000)

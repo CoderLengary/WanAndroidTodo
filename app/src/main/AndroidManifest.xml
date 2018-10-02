@@ -23,10 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.add.AddTodoActivity"
-            android:theme="@style/AppTheme.Login" />
-        <activity android:name=".WelcomeActivity"></activity>
+
+        <activity android:name=".WelcomeActivity"
+            android:launchMode="singleTask"/>
 
 
     </application>

@@ -17,8 +17,8 @@
 package com.example.lengary_l.wanandroidtodo.calender;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
@@ -33,22 +33,16 @@ import com.haibin.calendarview.MonthView;
 public class SimpleMonthView extends MonthView {
 
     private int mRadius;
-    private Paint mPointPaint = new Paint();
-    private int mPadding;
-    private float mPointRadius;
+
+
+
 
     public SimpleMonthView(Context context) {
         super(context);
         //兼容硬件加速无效的代码
         setLayerType(View.LAYER_TYPE_SOFTWARE,mSelectedPaint);
         //4.0以上硬件加速会导致无效
-        mPointPaint.setAntiAlias(true);
-        mPointPaint.setStyle(Paint.Style.FILL);
-        mPointPaint.setTextAlign(Paint.Align.CENTER);
-        mPointPaint.setColor(Color.RED);
-
-        mPadding = dipToPx(getContext(), 3);
-        mPointRadius = dipToPx(context, 2);
+        mSelectedPaint.setMaskFilter(new BlurMaskFilter(15, BlurMaskFilter.Blur.SOLID));
     }
 
     @Override
@@ -72,14 +66,9 @@ public class SimpleMonthView extends MonthView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        boolean isSelected = isSelected(calendar);
-        if (isSelected) {
-            mPointPaint.setColor(Color.WHITE);
-        } else {
-            mPointPaint.setColor(Color.RED);
-        }
-
-        canvas.drawCircle(x + mItemWidth / 2, y + mItemHeight - 3 * mPadding, mPointRadius, mPointPaint);
+        int cx = x + mItemWidth / 2;
+        int cy = y + mItemHeight / 2;
+        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
     }
 
     @Override
@@ -106,8 +95,5 @@ public class SimpleMonthView extends MonthView {
         }
     }
 
-    private static int dipToPx(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
+
 }
