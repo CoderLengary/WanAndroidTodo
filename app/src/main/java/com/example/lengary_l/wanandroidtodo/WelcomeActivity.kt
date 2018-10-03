@@ -52,7 +52,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun initData() {
 
-        mViewModel.clearAll()
-        mViewModel.getAllByRemote()
+        mViewModel.clearAllTodo()
+        mViewModel.getAllRemoteTodoData()
     }
 }

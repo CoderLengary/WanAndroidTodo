@@ -32,33 +32,30 @@ import kotlinx.coroutines.experimental.withContext
 class TodoDataLocalSource private constructor(
         private val mAppExecutors: AppExecutors,
         private val mTodoDetailDataDao: TodoDetailDataDao): TodoDataSource {
+    override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> =
+            withContext(mAppExecutors.ioContext) {
+                val result = mTodoDetailDataDao.queryAllByDate(dateStr)
+                if (!result.isEmpty()) Result.Success(result) else Result.Error(RemoteException())
+            }
 
 
-
-    override suspend fun insertTodo(data: TodoDetailData) {
+    override suspend fun insertItem(data: TodoDetailData) {
         withContext(mAppExecutors.ioContext) {
             mTodoDetailDataDao.insertTodoDetailData(data)
         }
     }
 
 
-    override suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> =
-        withContext(mAppExecutors.ioContext) {
-            val result = mTodoDetailDataDao.queryAllByDateAndStatus(dateStr, status)
-            if (!result.isEmpty()) Result.Success(result) else Result.Error(RemoteException())
-        }
 
 
-
-
-    override suspend fun clearAllTodo() {
+    override suspend fun clearAll() {
          withContext(mAppExecutors.ioContext) {
              val result = mTodoDetailDataDao.queryAll()
              if (!result.isEmpty()) mTodoDetailDataDao.deleteAll(result)
          }
     }
 
-    override suspend fun deleteTodo(id: Int) {
+    override suspend fun deleteItem(id: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -79,18 +76,18 @@ class TodoDataLocalSource private constructor(
     }
 
 
-    override suspend fun saveAllTodo(data: TodoData) {
+    override suspend fun saveAll(data: TodoData) {
         withContext(mAppExecutors.ioContext) {
-            val liveList = data.data.allLiveList
+            val incompleteList = data.data.incompleteList
 
-            for (todoListData in liveList) {
+            for (todoListData in incompleteList) {
                 for (todoDetailData in todoListData.list) {
                     mTodoDetailDataDao.insertTodoDetailData(todoDetailData)
                 }
             }
-            val doneList = data.data.allDoneList
+            val completeList = data.data.completeList
 
-            for (doneListData in doneList) {
+            for (doneListData in completeList) {
                 for (todoDetailData in doneListData.list) {
                     mTodoDetailDataDao.insertTodoDetailData(todoDetailData)
                 }
@@ -103,11 +100,11 @@ class TodoDataLocalSource private constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status> {
+    override suspend fun submitItem(title: String, content: String, date: String, type: Int): Result<Status> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
+    override suspend fun updateItem(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

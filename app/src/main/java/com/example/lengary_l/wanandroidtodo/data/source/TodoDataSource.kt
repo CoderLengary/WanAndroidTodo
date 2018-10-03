@@ -27,21 +27,19 @@ interface TodoDataSource {
 
     suspend fun getRemoteDataByType(type: Int): Result<TodoData>
 
-    suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status>
+    suspend fun submitItem(title: String, content: String, date: String, type: Int): Result<Status>
 
-    suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
+    suspend fun updateItem(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status>
 
-    suspend fun saveAllTodo(data: TodoData)
+    suspend fun saveAll(data: TodoData)
 
-    suspend fun insertTodo(data: TodoDetailData)
+    suspend fun insertItem(data: TodoDetailData)
 
-    suspend fun deleteTodo(id: Int)
+    suspend fun deleteItem(id: Int)
 
-    suspend fun clearAllTodo()
+    suspend fun clearAll()
 
-    suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>>
-
-
+    suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>>
 
 
 }

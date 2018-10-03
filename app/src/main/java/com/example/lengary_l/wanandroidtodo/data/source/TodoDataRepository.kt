@@ -27,15 +27,16 @@ class TodoDataRepository private constructor(
         private val mRemote: TodoDataSource,
         private val mLocal: TodoDataSource
 ): TodoDataSource{
-
-
-    override suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> {
-        return mLocal.getLocalDataByDateAndStatus(dateStr, status)
+    override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> {
+        return mLocal.getLocalDataByDate(dateStr)
     }
 
 
-    override suspend fun saveAllTodo(data: TodoData) {
-        mLocal.saveAllTodo(data)
+
+
+
+    override suspend fun saveAll(data: TodoData) {
+        mLocal.saveAll(data)
     }
 
 
@@ -57,37 +58,37 @@ class TodoDataRepository private constructor(
     override suspend fun getRemoteDataByType(type: Int): Result<TodoData> {
         val result =  mRemote.getRemoteDataByType(type)
         if (result is Result.Success) {
-            saveAllTodo(result.data)
+            saveAll(result.data)
         }
         return result
     }
 
-    override suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status> {
+    override suspend fun submitItem(title: String, content: String, date: String, type: Int): Result<Status> {
 
-        val result = mRemote.submitTodo(title, content, date, type)
+        val result = mRemote.submitItem(title, content, date, type)
         if (result is Result.Success) {
-            insertTodo(result.data.data)
+            insertItem(result.data.data)
         }
         return result
     }
 
-    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
-        val result = mRemote.updateTodo(id, title, content, date, status, type)
+    override suspend fun updateItem(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
+        val result = mRemote.updateItem(id, title, content, date, status, type)
         if (result is Result.Success) {
-            insertTodo(result.data.data)
+            insertItem(result.data.data)
         }
         return result
     }
 
-    override suspend fun insertTodo(data: TodoDetailData) {
-        mLocal.insertTodo(data)
+    override suspend fun insertItem(data: TodoDetailData) {
+        mLocal.insertItem(data)
     }
 
-    override suspend fun deleteTodo(id: Int) {
+    override suspend fun deleteItem(id: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun clearAllTodo() {
-        mLocal.clearAllTodo()
+    override suspend fun clearAll() {
+        mLocal.clearAll()
     }
 }

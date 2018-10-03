@@ -52,4 +52,5 @@
     <color name="yellow_fcca3d">#fcca3d</color>
 
     <color name="black">@android:color/black</color>
+
 </resources>

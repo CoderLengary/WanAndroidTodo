@@ -16,11 +16,11 @@
 
 package com.example.lengary_l.wanandroidtodo.interfaze
 
-import android.view.View
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 
 /**
  * Created by CoderLengary
  */
 interface OnRecyclerViewItemOnClickListener {
-    fun onItemClick(v: View, position: Int)
+    fun onItemClick(data: TodoDetailData)
 }

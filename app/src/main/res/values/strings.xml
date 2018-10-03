@@ -42,11 +42,18 @@
 
     <string name="home_custom_alert_dialog_title_hint">Enter the title here</string>
     <string name="home_custom_alert_dialog_content_hint">Enter your content here</string>
+    <string name="home_custom_alert_dialog_btn_sure">Sure</string>
+    <string name="home_custom_alert_dialog_btn_update">Update</string>
+
 
     <string name="home_alert_dialog_title">Warning</string>
     <string name="home_alert_dialog_content">No network, could not load any data for you</string>
     <string name="home_alert_dialog_positive">Refresh</string>
     <string name="home_alert_dialog_negative">Close App</string>
+
+    <string name="home_item_recycler_view_status_incomplete">Incomplete</string>
+    <string name="home_item_recycler_view_status_complete">Complete</string>
+    <string name="home_item_recycler_view_empty">Empty List</string>
     <!-- Home end -->
 
     <!-- Add to do start -->

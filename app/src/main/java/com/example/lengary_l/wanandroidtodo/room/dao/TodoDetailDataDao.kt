@@ -27,8 +27,8 @@ interface TodoDetailDataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTodoDetailData(data: TodoDetailData)
 
-    @Query("SELECT * FROM todo WHERE (dateStr = :dateStr) AND (status = :status)")
-    fun queryAllByDateAndStatus(dateStr: String, status: Int): List<TodoDetailData>
+    @Query("SELECT * FROM todo WHERE dateStr = :dateStr")
+    fun queryAllByDate(dateStr: String): List<TodoDetailData>
 
     @Query("SELECT * FROM todo")
     fun queryAll(): List<TodoDetailData>

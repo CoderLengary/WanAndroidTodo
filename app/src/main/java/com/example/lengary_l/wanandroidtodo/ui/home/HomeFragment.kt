@@ -24,16 +24,20 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
+import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 import com.example.lengary_l.wanandroidtodo.data.TodoListType
 import com.example.lengary_l.wanandroidtodo.databinding.AlertDialogLayoutBinding
 import com.example.lengary_l.wanandroidtodo.databinding.FragmentHomeBinding
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
+import com.example.lengary_l.wanandroidtodo.util.changeToListType
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
@@ -50,16 +54,12 @@ class HomeFragment: Fragment() {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var mTodoFragment: TodoFragment
-    private lateinit var mDoneFragment: DoneFragment
 
     private lateinit var mYear: String
     private lateinit var mMonth: String
     private lateinit var mDay: String
 
     private lateinit var mDataBinding: FragmentHomeBinding
-
-    private var mCurrentListType: TodoListType ?= null
 
     private var mSelectedDate = "0000-00-00"
 
@@ -86,20 +86,10 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
         //calendar
         initCalendar()
-
-        //child fragment
-        initFragments(savedInstanceState)
-        viewPager.adapter = HomePageAdapter(
-                childFragmentManager,
-                context!!,
-                mTodoFragment,
-                mDoneFragment
-        )
-        viewPager.offscreenPageLimit = 2
-        tabLayout.setupWithViewPager(viewPager)
-
 
         //float action button
         initSpeedDial()
@@ -109,17 +99,6 @@ class HomeFragment: Fragment() {
 
 
 
-
-    private fun initFragments(savedInstanceState: Bundle?) {
-        val fm = childFragmentManager
-        if (savedInstanceState == null) {
-            mTodoFragment = TodoFragment.newInstance()
-            mDoneFragment = DoneFragment.newIntance()
-        } else {
-            mTodoFragment = fm.getFragment(savedInstanceState, TodoFragment::class.java.simpleName) as TodoFragment
-            mDoneFragment = fm.getFragment(savedInstanceState, DoneFragment::class.java.simpleName) as DoneFragment
-        }
-    }
 
     private fun initCalendar() {
         mDataBinding.currentDay = calendarView.curDay.toString()
@@ -143,7 +122,8 @@ class HomeFragment: Fragment() {
                         mDay = "0$mDay"
                     }
                     mSelectedDate = "$mYear-$mMonth-$mDay"
-                    mViewModel.changeTodoDataByDate(mSelectedDate)
+                    //mViewModel.changeTodoDataByDate(mSelectedDate)
+                    mViewModel.getLocalTodoDataByDate(mSelectedDate)
                     mDataBinding.monthDay = "$mMonth / $mDay"
                     mDataBinding.year = mYear
                 }
@@ -162,8 +142,8 @@ class HomeFragment: Fragment() {
         val map = HashMap<String, Calendar>()
         for (dateStr in dateStrList) {
             val list = dateStr.split("-")
-            map.put(getSchemeCalendar(list[0].toInt(), list[1].toInt(), list[2].toInt(), -0x20ecaa).toString(),
-                   getSchemeCalendar(list[0].toInt(), list[1].toInt(), list[2].toInt(), -0x20ecaa))
+            map.put(getSchemeCalendar(list[0].toInt(), list[1].toInt(), list[2].toInt(), -0x1000000).toString(),
+                   getSchemeCalendar(list[0].toInt(), list[1].toInt(), list[2].toInt(), -0x1000000))
         }
         calendarView.setSchemeDate(map)
     }
@@ -181,34 +161,39 @@ class HomeFragment: Fragment() {
         speedDial.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_love, R.mipmap.ic_love_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+                        .setLabel(R.string.type_love)
+                        .setLabelColor(context!!.getColor(R.color.colorPrimary))
                         .create())
         speedDial.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_life, R.mipmap.ic_life_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+                        .setLabel(R.string.type_life)
                         .create())
         speedDial.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_study, R.mipmap.ic_books_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+                        .setLabel(R.string.type_study)
                         .create())
         speedDial.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_work, R.mipmap.ic_work_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+                        .setLabel(R.string.type_work)
                         .create())
 
         speedDial.setOnActionSelectedListener {
             when(it.id) {
-                R.id.fab_love -> openAlertDialog(TodoListType.LOVE)
-                R.id.fab_life -> openAlertDialog(TodoListType.LIFE)
-                R.id.fab_study -> openAlertDialog(TodoListType.STUDY)
-                R.id.fab_work -> openAlertDialog(TodoListType.WORK)
+                R.id.fab_love -> openAlertDialog(null,  TodoListType.LOVE)
+                R.id.fab_life -> openAlertDialog(null,  TodoListType.LIFE)
+                R.id.fab_study -> openAlertDialog(null,  TodoListType.STUDY)
+                R.id.fab_work -> openAlertDialog(null,  TodoListType.WORK)
             }
             return@setOnActionSelectedListener true
         }
     }
 
 
-    private fun openAlertDialog(type: TodoListType) {
-        val builder= AlertDialog.Builder(context)
+    private fun openAlertDialog(data: TodoDetailData?, type: TodoListType) {
+        val builder = AlertDialog.Builder(context)
         mDialog = builder.create()
         mDialog?.let {
             it.show()
@@ -224,35 +209,80 @@ class HomeFragment: Fragment() {
             mAlertDialogBinding.todoType = type.value
             mAlertDialogBinding.selectedDate = mSelectedDate
             with(view) {
-                this.btnSubmit.setOnClickListener {
-                    val title = this.editTitle.editableText
-                    val content = this.editContent.editableText
-                    if (title.isEmpty()) {
-                        Toast.makeText(context, "Title is non null", Toast.LENGTH_SHORT).show()
-                    }else {
-                        mViewModel.submitTodo(title.toString(), content.toString(), mSelectedDate, type )
+
+                data?.let {
+                    editTitle.setText(it.title)
+                    editTitle.setSelection(it.title.length)
+                    editContent.setText(it.content)
+                    btnSubmit.setText(R.string.home_custom_alert_dialog_btn_update)
+                }
+
+                btnSubmit.setOnClickListener {
+                    val editTitle = editTitle.editableText
+                    val editContent = editContent.editableText
+                    when {
+                        editTitle.isEmpty() -> Toast.makeText(context, "Title is non null", Toast.LENGTH_SHORT).show()
+                        data != null -> mViewModel.updateTodo(data.id, editTitle.toString(), editContent.toString(), data.dateStr, data.status, data.type)
+                        else -> mViewModel.submitTodo(editTitle.toString(), editContent.toString(), mSelectedDate, type)
                     }
                 }
             }
         }
-
-
     }
 
 
     private fun subscribeUi() {
+        var adapter: TodoAdapter ?= null
+        mViewModel.todoList.observe(viewLifecycleOwner, Observer {
+            it?.let { list ->
+                recyclerView.visibility = View.VISIBLE
+                emptyLayout.visibility = View.INVISIBLE
+                if (adapter == null) {
+                    adapter = TodoAdapter(list as MutableList<TodoDetailData>)
+                    adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
+                        override fun onItemClick(data: TodoDetailData) {
+                            openAlertDialog(data, data.type.changeToListType())
+                        }
+
+                    })
+                    recyclerView.adapter = adapter
+                }else {
+                    adapter?.update(list as MutableList<TodoDetailData>)
+                }
+            }
+        })
+
+        mViewModel.todoListError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                recyclerView.visibility = View.INVISIBLE
+                emptyLayout.visibility = View.VISIBLE
+            }
+        })
+
+
+
 
         mViewModel.getAllTodoError.observe(viewLifecycleOwner, Observer {
             showAlertDialog()
         })
 
-        mViewModel.addStatusData.observe(viewLifecycleOwner, Observer {
+        mViewModel.statusData.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if(it == TodoDataViewModel.SUCCESS_MSG) {
-                    mDialog?.let {
-                        it.dismiss()
-                        mViewModel.changeTodoDataByDate(mSelectedDate)
+                when(it) {
+                    TodoDataViewModel.ADD_SUCCESS_MSG -> {
+                        mDialog?.let {
+                            it.dismiss()
+                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                        }
                     }
+                    TodoDataViewModel.UPDATE_SUCCESS_MSG -> {
+                        mDialog?.let {
+                            it.dismiss()
+                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                        }
+                    }
+                    else -> {}
+
                 }
             }
         })
@@ -280,7 +310,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun refresh() {
-        mViewModel.getAllByRemote()
+        mViewModel.getAllRemoteTodoData()
     }
 
 }

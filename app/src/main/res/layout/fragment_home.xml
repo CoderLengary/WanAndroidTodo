@@ -20,15 +20,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="year"
-            type="String"/>
+            type="String" />
+
         <variable
             name="monthDay"
-            type="String"/>
+            type="String" />
+
         <variable
             name="currentDay"
-            type="String"/>
+            type="String" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -37,9 +40,9 @@
 
 
         <LinearLayout
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -52,31 +55,31 @@
                     android:id="@+id/textMonthDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{monthDay}"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="36sp"
                     android:textStyle="bold"
-                    android:text="@{monthDay}"
-                    tools:text="08/29"/>
+                    tools:text="08/29" />
 
                 <TextView
-                    android:paddingBottom="6dp"
-                    android:layout_alignBottom="@+id/textMonthDay"
-                    android:layout_marginLeft="@dimen/activity_margin_half"
-                    android:layout_toRightOf="@+id/textMonthDay"
-                    android:layout_toLeftOf="@+id/currentCalenderLayout"
                     android:id="@+id/textYear"
-                    tools:text="2018"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{year}"/>
+                    android:layout_alignBottom="@+id/textMonthDay"
+                    android:layout_marginLeft="@dimen/activity_margin_half"
+                    android:layout_toLeftOf="@+id/currentCalenderLayout"
+                    android:layout_toRightOf="@+id/textMonthDay"
+                    android:paddingBottom="6dp"
+                    android:text="@{year}"
+                    tools:text="2018" />
 
                 <FrameLayout
 
-                    android:layout_alignParentRight="true"
-                    android:layout_alignBottom="@+id/textMonthDay"
                     android:id="@+id/currentCalenderLayout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/textMonthDay"
+                    android:layout_alignParentRight="true">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -87,12 +90,12 @@
 
                     <TextView
                         android:id="@+id/textCurrentDay"
-                        android:layout_marginTop="2dp"
-                        tools:text="26"
-                        android:text="@{currentDay}"
-                        android:gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="@{currentDay}"
+                        tools:text="26" />
 
                 </FrameLayout>
 
@@ -103,21 +106,23 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
                 android:orientation="vertical"
-                app:default_status="shrink"
-                app:calendar_content_view_id="@+id/calendarContentLayout">
+                app:calendar_content_view_id="@+id/content_layout"
+                app:default_status="shrink">
+
                 <com.haibin.calendarview.CalendarView
                     android:id="@+id/calendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
-                    app:calendar_padding="10dp"
-                    app:month_view="com.example.lengary_l.wanandroidtodo.calender.SimpleMonthView"
                     app:calendar_height="46dp"
-
+                    app:calendar_padding="10dp"
                     app:current_month_text_color="#333333"
-                    app:min_year="2004"
-                    app:other_month_text_color="#e1e1e1"
 
+                    app:min_year="2004"
+                    app:month_view="com.example.lengary_l.wanandroidtodo.calender.SimpleMonthView"
+                    app:month_view_show_mode="mode_only_current"
+
+                    app:other_month_text_color="#e1e1e1"
                     app:selected_text_color="#fff"
                     app:selected_theme_color="#111"
                     app:week_background="@color/colorPrimary"
@@ -127,31 +132,48 @@
                     app:year_view_day_text_size="9sp"
                     app:year_view_month_text_color="#ff0000"
                     app:year_view_month_text_size="20sp"
-                    app:month_view_show_mode="mode_only_current"
-                    app:year_view_scheme_color="#f17706"/>
+                    app:year_view_scheme_color="#f17706" />
 
-                <LinearLayout
-                    android:background="@color/layout_background"
-                    android:id="@+id/calendarContentLayout"
-                    android:orientation="vertical"
+
+                <FrameLayout
+                    android:id="@+id/content_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:tabGravity="fill"
-                        app:tabBackground="@color/colorPrimary"
-                        app:tabIndicatorColor="@color/colorAccent"
-                        app:tabSelectedTextColor="@color/colorAccent"
-                        app:tabTextColor="@color/colorPrimaryText" />
-
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/viewPager"
+                    android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-                </LinearLayout>
+                        android:layout_marginTop="@dimen/card_vertical_margin_half"
+                        android:layout_marginBottom="@dimen/card_vertical_margin_half"
+                        android:background="@color/colorPrimary"
+                        android:scrollbarFadeDuration="1"
+                        android:scrollbars="vertical"
+                        tools:listitem="@layout/item_recyclerview_normal" />
+                    <LinearLayout
+                        android:id="@+id/emptyLayout"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:src="@drawable/ic_fingerprint_black_24dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:tint="@color/colorAccent"/>
+
+                        <TextView
+                            android:text="@string/empty_text"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorAccent"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+
             </com.haibin.calendarview.CalendarLayout>
         </LinearLayout>
 
@@ -163,19 +185,18 @@
 
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/speedDial"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="2dp"
             app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
             app:sdExpansionMode="top"
             app:sdMainFabAnimationRotateAngle="90"
             app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
-            app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
             app:sdMainFabClosedSrc="@drawable/ic_add_white_24dp"
+            app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
             app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
-            app:sdOverlayLayout="@id/overLayout"
-            />
+            app:sdOverlayLayout="@id/overLayout" />
 
     </android.support.design.widget.CoordinatorLayout>
 

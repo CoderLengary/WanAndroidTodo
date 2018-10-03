@@ -32,7 +32,9 @@ import kotlinx.coroutines.experimental.withContext
  */
 class TodoDataRemoteSource private constructor(
         private val mAppExecutors: AppExecutors): TodoDataSource {
-
+    override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     companion object {
@@ -78,7 +80,7 @@ class TodoDataRemoteSource private constructor(
         }
     }
 
-    override suspend fun submitTodo(title: String, content: String, date: String, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
+    override suspend fun submitItem(title: String, content: String, date: String, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
         try {
             val response = mTodoService.submitTodo(title, content, date, type).execute()
             if (response.isSuccessful) {
@@ -101,7 +103,7 @@ class TodoDataRemoteSource private constructor(
         }
     }
 
-    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
+    override suspend fun updateItem(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
         try {
             val response = mTodoService.updateTodo(id, title, content, date, status, type).execute()
             if (response.isSuccessful) {
@@ -126,24 +128,21 @@ class TodoDataRemoteSource private constructor(
 
 
 
-    override suspend fun insertTodo(data: TodoDetailData) {
+    override suspend fun insertItem(data: TodoDetailData) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteTodo(id: Int) {
+    override suspend fun deleteItem(id: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun clearAllTodo() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override suspend fun getLocalDataByDateAndStatus(dateStr: String, status: Int): Result<List<TodoDetailData>> {
+    override suspend fun clearAll() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override suspend fun saveAllTodo(data: TodoData) {
+
+    override suspend fun saveAll(data: TodoData) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
