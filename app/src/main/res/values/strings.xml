@@ -54,6 +54,10 @@
     <string name="home_item_recycler_view_status_incomplete">Incomplete</string>
     <string name="home_item_recycler_view_status_complete">Complete</string>
     <string name="home_item_recycler_view_empty">Empty List</string>
+    <string name="home_item_recycler_view_complete">complete</string>
+    <string name="home_item_recycler_view_revert">revert</string>
+    <string name="home_item_recycler_view_delete">delete</string>
+
     <!-- Home end -->
 
     <!-- Add to do start -->
@@ -109,5 +113,8 @@
     <string name="error">Something wrong</string>
     <!-- Error end -->
 
+    <!--Success start-->
+    <string name="success">Success</string>
+    <!--Success end-->
 
 </resources>

@@ -46,7 +46,9 @@ class WelcomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }, 5000)
+
     }
+
 
 
 

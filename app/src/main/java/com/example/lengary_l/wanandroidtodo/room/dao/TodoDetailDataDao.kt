@@ -33,9 +33,14 @@ interface TodoDetailDataDao {
     @Query("SELECT * FROM todo")
     fun queryAll(): List<TodoDetailData>
 
+    @Query("SELECT * FROM todo WHERE id = :id")
+    fun queryTodoDetailDataById(id: Int):TodoDetailData?
+
     @Delete
     fun deleteTodoDetailData(item: TodoDetailData)
 
     @Delete
     fun deleteAll(list: List<TodoDetailData>)
+
+
 }

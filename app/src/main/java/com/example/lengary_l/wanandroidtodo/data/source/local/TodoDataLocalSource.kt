@@ -32,6 +32,18 @@ import kotlinx.coroutines.experimental.withContext
 class TodoDataLocalSource private constructor(
         private val mAppExecutors: AppExecutors,
         private val mTodoDetailDataDao: TodoDetailDataDao): TodoDataSource {
+
+
+
+    override suspend fun deleteItem(id: Int) {
+        withContext(mAppExecutors.ioContext) {
+            val result = mTodoDetailDataDao.queryTodoDetailDataById(id)
+            result?.let {
+                mTodoDetailDataDao.deleteTodoDetailData(it)
+            }
+        }
+    }
+
     override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> =
             withContext(mAppExecutors.ioContext) {
                 val result = mTodoDetailDataDao.queryAllByDate(dateStr)
@@ -55,9 +67,7 @@ class TodoDataLocalSource private constructor(
          }
     }
 
-    override suspend fun deleteItem(id: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
 
     companion object {
@@ -105,6 +115,10 @@ class TodoDataLocalSource private constructor(
     }
 
     override suspend fun updateItem(id: Int, title: String, content: String, date: String, status: Int, type: Int): Result<Status> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteItemByRemote(id: Int): Result<Status> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -32,6 +32,10 @@ import kotlinx.coroutines.experimental.withContext
  */
 class TodoDataRemoteSource private constructor(
         private val mAppExecutors: AppExecutors): TodoDataSource {
+    override suspend fun deleteItem(id: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -124,7 +128,26 @@ class TodoDataRemoteSource private constructor(
         }
     }
 
-
+    override suspend fun deleteItemByRemote(id: Int): Result<Status> = withContext(mAppExecutors.ioContext) {
+        try {
+            val response = mTodoService.deleteTodo(id).execute()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    if (it.errorCode == 0) {
+                        Result.Success(it)
+                    }else {
+                        Result.Error(RemoteException(it.errorMsg))
+                    }
+                }?: run {
+                    Result.Error(RemoteException())
+                }
+            }else {
+                Result.Error(RemoteException())
+            }
+        }catch (e: Exception) {
+            Result.Error(RemoteException())
+        }
+    }
 
 
 
@@ -132,9 +155,7 @@ class TodoDataRemoteSource private constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteItem(id: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
     override suspend fun clearAll() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -27,6 +27,18 @@ class TodoDataRepository private constructor(
         private val mRemote: TodoDataSource,
         private val mLocal: TodoDataSource
 ): TodoDataSource{
+    override suspend fun deleteItemByRemote(id: Int): Result<Status> {
+        val result = mRemote.deleteItemByRemote(id)
+        if (result is Result.Success) {
+            deleteItem(id)
+        }
+        return result
+    }
+
+    override suspend fun deleteItem(id: Int) {
+        mLocal.deleteItem(id)
+    }
+
     override suspend fun getLocalDataByDate(dateStr: String): Result<List<TodoDetailData>> {
         return mLocal.getLocalDataByDate(dateStr)
     }
@@ -84,9 +96,7 @@ class TodoDataRepository private constructor(
         mLocal.insertItem(data)
     }
 
-    override suspend fun deleteItem(id: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
     override suspend fun clearAll() {
         mLocal.clearAll()

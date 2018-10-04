@@ -22,9 +22,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.lengary_l.wanandroidtodo.R
+import com.example.lengary_l.wanandroidtodo.component.CustomHorizontalScrollView
 import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
-import com.example.lengary_l.wanandroidtodo.databinding.ItemRecyclerviewNormalBinding
+import com.example.lengary_l.wanandroidtodo.databinding.ItemRecyclerViewContentBinding
 import com.example.lengary_l.wanandroidtodo.interfaze.OnRecyclerViewItemOnClickListener
+import kotlinx.android.synthetic.main.item_recycler_view_content.view.*
 import kotlinx.android.synthetic.main.item_recyclerview_status.view.*
 
 /**
@@ -38,6 +40,31 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
 
     private var mListener: OnRecyclerViewItemOnClickListener ?= null
 
+    private var mScrollingItem: CustomHorizontalScrollView? =null
+    private var mOpenItem: CustomHorizontalScrollView? =null
+
+
+
+    fun setOpenItem(openItem: CustomHorizontalScrollView?) {
+        mOpenItem = openItem
+    }
+
+    fun closeOtherOpenItem(): Boolean {
+        if (mOpenItem != null && mOpenItem!!.isOpen()) {
+            mOpenItem!!.close()
+            mOpenItem = null
+            return true
+        }
+        return false
+    }
+
+    fun setScrollingItem(scrollingItem: CustomHorizontalScrollView?) {
+        mScrollingItem = scrollingItem
+    }
+
+    fun getScrollingItem(): CustomHorizontalScrollView? {
+        return if (mScrollingItem != null) mScrollingItem else null
+    }
 
     init {
         mIncompleteList.addAll(mList.filter { it.status==0 })
@@ -67,9 +94,9 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when(viewType) {
             ItemWrapper.TYPE_INCOMPLETE_STATUS -> StatusViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_recyclerview_status, viewGroup, false))
-            ItemWrapper.TYPE_INCOMPLETE_LIST -> ItemNormalViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.item_recyclerview_normal, viewGroup, false))
+            ItemWrapper.TYPE_INCOMPLETE_LIST -> ItemContentViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.item_recycler_view_content, viewGroup, false))
             ItemWrapper.TYPE_COMPLETE_STATUS -> StatusViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_recyclerview_status, viewGroup, false))
-            ItemWrapper.TYPE_COMPLETE_LIST -> ItemNormalViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.item_recyclerview_normal, viewGroup, false))
+            ItemWrapper.TYPE_COMPLETE_LIST -> ItemContentViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), R.layout.item_recycler_view_content, viewGroup, false))
             ItemWrapper.TYPE_EMPTY -> EmptyViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_recyclerview_empty, viewGroup, false))
             else -> StatusViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.item_recyclerview_status, viewGroup, false))
         }
@@ -94,19 +121,48 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
             }
             ItemWrapper.TYPE_INCOMPLETE_LIST -> {
                 val incompleteTodo = mIncompleteList[iw.index]
-                with(viewHolder as ItemNormalViewHolder) {
+                with(viewHolder as ItemContentViewHolder) {
                     binding.todo = incompleteTodo
-                    binding.clickListener = View.OnClickListener {
-                        mListener?.onItemClick(incompleteTodo)
+                    itemView.customHorizontalView.setOnCustomClickListener(object : CustomHorizontalScrollView.OnCustomClickListener{
+                        override fun onClick() {
+                            if (mOpenItem == null){
+                                mListener?.onContentClick(incompleteTodo)
+                            }
+
+                        }
+                    })
+
+                    binding.updateStatusListener = View.OnClickListener {
+                        closeOtherOpenItem()
+                        mListener?.onCompelteClick(incompleteTodo)
+                    }
+
+                    binding.deleteListener = View.OnClickListener {
+                        closeOtherOpenItem()
+                        mListener?.onDeleteClick(incompleteTodo)
                     }
                 }
             }
             ItemWrapper.TYPE_COMPLETE_LIST -> {
                 val completeTodo = mCompleteList[iw.index]
-                with(viewHolder as ItemNormalViewHolder) {
+                with(viewHolder as ItemContentViewHolder) {
                     binding.todo = completeTodo
-                    binding.clickListener = View.OnClickListener {
-                        mListener?.onItemClick(completeTodo)
+                    itemView.customHorizontalView.setOnCustomClickListener(object : CustomHorizontalScrollView.OnCustomClickListener{
+                        override fun onClick() {
+                            if (mOpenItem == null) {
+                                mListener?.onContentClick(completeTodo)
+                            }
+                        }
+                    })
+
+                    binding.updateStatusListener = View.OnClickListener {
+                        closeOtherOpenItem()
+                        mListener?.onRevertClick(completeTodo)
+                    }
+
+                    binding.deleteListener = View.OnClickListener {
+                        closeOtherOpenItem()
+                        mListener?.onDeleteClick(completeTodo)
                     }
                 }
             }
@@ -114,11 +170,6 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
 
     }
 
-
-
-    private fun getRealPosition(position: Int): Int {
-        return mWrapperList[position].index
-    }
 
     fun update(list: MutableList<TodoDetailData>) {
         mList.clear()
@@ -156,7 +207,7 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
     }
 
 
-    class ItemNormalViewHolder(val binding: ItemRecyclerviewNormalBinding): RecyclerView.ViewHolder(binding.root)
+    class ItemContentViewHolder(val binding: ItemRecyclerViewContentBinding): RecyclerView.ViewHolder(binding.root)
 
     class StatusViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
 
@@ -167,11 +218,11 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
 
         companion object {
 
-            val TYPE_INCOMPLETE_STATUS = 0x00
-            val TYPE_INCOMPLETE_LIST = 0x01
-            val TYPE_EMPTY = 0x02
-            val TYPE_COMPLETE_STATUS = 0x03
-            val TYPE_COMPLETE_LIST = 0x04
+            const val TYPE_INCOMPLETE_STATUS = 0x00
+            const val TYPE_INCOMPLETE_LIST = 0x01
+            const val TYPE_EMPTY = 0x02
+            const val TYPE_COMPLETE_STATUS = 0x03
+            const val TYPE_COMPLETE_LIST = 0x04
         }
     }
 

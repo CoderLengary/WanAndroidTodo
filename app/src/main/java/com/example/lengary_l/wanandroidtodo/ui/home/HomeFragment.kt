@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,7 @@ class HomeFragment: Fragment() {
 
     private var mDialog: AlertDialog? = null
 
+    var adapter: TodoAdapter ?= null
 
 
     private val mFactory by lazy {
@@ -124,11 +126,15 @@ class HomeFragment: Fragment() {
                     mSelectedDate = "$mYear-$mMonth-$mDay"
                     //mViewModel.changeTodoDataByDate(mSelectedDate)
                     mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                    adapter?.let {
+                        it.closeOtherOpenItem()
+                    }
                     mDataBinding.monthDay = "$mMonth / $mDay"
                     mDataBinding.year = mYear
                 }
             }
         })
+
         currentCalenderLayout.setOnClickListener{
             calendarView.scrollToCurrent()
         }
@@ -162,8 +168,7 @@ class HomeFragment: Fragment() {
                 SpeedDialActionItem.Builder(R.id.fab_love, R.mipmap.ic_love_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
                         .setLabel(R.string.type_love)
-                        .setLabelColor(context!!.getColor(R.color.colorPrimary))
-                        .create())
+                         .create())
         speedDial.addActionItem(
                 SpeedDialActionItem.Builder(R.id.fab_life, R.mipmap.ic_life_100)
                         .setFabBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
@@ -232,7 +237,7 @@ class HomeFragment: Fragment() {
 
 
     private fun subscribeUi() {
-        var adapter: TodoAdapter ?= null
+
         mViewModel.todoList.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
                 recyclerView.visibility = View.VISIBLE
@@ -240,10 +245,28 @@ class HomeFragment: Fragment() {
                 if (adapter == null) {
                     adapter = TodoAdapter(list as MutableList<TodoDetailData>)
                     adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
-                        override fun onItemClick(data: TodoDetailData) {
+                        override fun onCompelteClick(data: TodoDetailData) {
+                            mViewModel.updateTodo(data.id, data.title, data.content, data.dateStr, 1, data.type)
+                        }
+
+                        override fun onRevertClick(data: TodoDetailData) {
+                            mViewModel.updateTodo(data.id, data.title, data.content, data.dateStr, 0, data.type)
+                        }
+
+                        override fun onDeleteClick(data: TodoDetailData) {
+                            mViewModel.deleteTodo(data.id)
+                        }
+
+                        override fun onContentClick(data: TodoDetailData) {
                             openAlertDialog(data, data.type.changeToListType())
                         }
 
+                    })
+                    recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                            super.onScrollStateChanged(recyclerView, newState)
+                            adapter!!.setScrollingItem(null)
+                        }
                     })
                     recyclerView.adapter = adapter
                 }else {
@@ -281,12 +304,14 @@ class HomeFragment: Fragment() {
                             mViewModel.getLocalTodoDataByDate(mSelectedDate)
                         }
                     }
-                    else -> {}
+                    TodoDataViewModel.DELETE_SUCCESS_MSG -> {
+                        mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                    }
+                    else -> Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
 
                 }
             }
         })
-
     }
 
     private fun showAlertDialog() {

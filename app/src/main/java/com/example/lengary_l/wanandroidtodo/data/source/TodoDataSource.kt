@@ -35,6 +35,8 @@ interface TodoDataSource {
 
     suspend fun insertItem(data: TodoDetailData)
 
+    suspend fun deleteItemByRemote(id: Int): Result<Status>
+
     suspend fun deleteItem(id: Int)
 
     suspend fun clearAll()

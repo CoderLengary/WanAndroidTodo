@@ -60,6 +60,15 @@ fun bindButtonTextColorFromType(view: Button, type: Int) {
     }
 }
 
+@BindingAdapter("textFromStatus")
+fun bindTextViewTextFromStatus(view: TextView, status: Int) {
+    if (status == 0) {
+        view.text = view.context.getText(R.string.home_item_recycler_view_complete)
+    }else if (status == 1) {
+        view.text = view.context.getText(R.string.home_item_recycler_view_revert)
+    }
+}
+
 @BindingAdapter("visibleFromStatus")
 fun setVisibilityFromStatus(view: TextView, status: Int) {
     if (status == 1) {

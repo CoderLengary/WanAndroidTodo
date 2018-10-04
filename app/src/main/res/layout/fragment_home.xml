@@ -135,7 +135,7 @@
                     app:year_view_scheme_color="#f17706" />
 
 
-                <FrameLayout
+                <com.example.lengary_l.wanandroidtodo.component.CustomFrameLayout
                     android:id="@+id/content_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -147,9 +147,9 @@
                         android:layout_marginBottom="@dimen/card_vertical_margin_half"
                         android:background="@color/colorPrimary"
                         android:scrollbarFadeDuration="1"
-                        android:scrollbars="vertical"
-                        tools:listitem="@layout/item_recyclerview_normal" />
+                        android:scrollbars="vertical" />
                     <LinearLayout
+                        android:background="@color/colorPrimary"
                         android:id="@+id/emptyLayout"
                         android:visibility="gone"
                         android:orientation="vertical"
@@ -171,7 +171,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorAccent"/>
                     </LinearLayout>
-                </FrameLayout>
+                </com.example.lengary_l.wanandroidtodo.component.CustomFrameLayout>
 
 
             </com.haibin.calendarview.CalendarLayout>

@@ -37,6 +37,7 @@ class TodoDataViewModel private constructor(
     companion object {
         const val ADD_SUCCESS_MSG = "Add Success!"
         const val UPDATE_SUCCESS_MSG= "Update Success!"
+        const val DELETE_SUCCESS_MSG = "Delete Success!"
         private var INSTANCE: TodoDataViewModel ?= null
         fun getInstance(mRepository: TodoDataRepository): TodoDataViewModel {
             if (INSTANCE == null) {
@@ -154,7 +155,16 @@ class TodoDataViewModel private constructor(
         }
     }
 
-
+    fun deleteTodo(id: Int) {
+        launchSilent(uiContext) {
+            val result = mRepository.deleteItemByRemote(id)
+            if (result is Result.Success) {
+                statusData.value = DELETE_SUCCESS_MSG
+            }else if (result is Result.Error) {
+                statusData.value = result.exception.message
+            }
+        }
+    }
 
 
 }
