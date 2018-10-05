@@ -3,6 +3,8 @@ package com.example.lengary_l.wanandroidtodo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
+import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.ui.home.HomeFragment
 import com.example.lengary_l.wanandroidtodo.ui.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -11,6 +13,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mHomeFragment: HomeFragment
     private lateinit var mSettingsFragment: SettingsFragment
+
+    private var firstExitTime:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +82,25 @@ class MainActivity : AppCompatActivity() {
         outState?.let {
             fm.putFragment(it, HomeFragment::class.java.simpleName, mHomeFragment)
             fm.putFragment(it, SettingsFragment::class.java.simpleName, mSettingsFragment) }
+    }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val secondExitTime = System.currentTimeMillis()
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (secondExitTime - firstExitTime < 2000) {
+                finish()
+            }else {
+                Toast.makeText(this, "Press again to exit", Toast.LENGTH_LONG).show()
+                firstExitTime = System.currentTimeMillis()
+            }
+            return true
+        }
+
+
+        return super.onKeyDown(keyCode, event)
+
     }
 
 }

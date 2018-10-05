@@ -26,9 +26,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.WelcomeActivity
+import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.injection.Injection
 import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
@@ -54,6 +54,7 @@ class RegisterFragment : Fragment()  {
         ViewModelProviders.of(this, mFactory)
                 .get(LoginDataViewModel::class.java)
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
@@ -123,22 +124,23 @@ class RegisterFragment : Fragment()  {
     private fun subscribeUi() {
 
         mViewModel.registerData.observe(viewLifecycleOwner, Observer {
-            if (it?.errorCode != 0){
-                inputLayoutUser.error = it?.errorMsg
-            }else {
-
-                SharedPreferencesUtils.putUserId(id = it.data.id)
-                val intent = Intent(context, WelcomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+            it?.let {
+                navigateToWelcome(it.data)
             }
         })
 
         mViewModel.registerExceptionData.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            inputLayoutUser.error = it
         })
     }
 
-
+    private fun navigateToWelcome(data: LoginDetailData) {
+        val intent = Intent(context, WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(SharedPreferencesUtils.USER_ID, data.id)
+        intent.putExtra(SharedPreferencesUtils.USER_NAME, data.username)
+        intent.putExtra(SharedPreferencesUtils.USER_PASSWORD, data.password)
+        startActivity(intent)
+    }
 
 }

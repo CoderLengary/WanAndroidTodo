@@ -17,7 +17,6 @@
 package com.example.lengary_l.wanandroidtodo.util
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.lengary_l.wanandroidtodo.app.App
 
 /**
@@ -27,30 +26,59 @@ object SharedPreferencesUtils {
 
     private const val USER_PREF = "uerPref"
 
-    private val userPref: SharedPreferences? by lazy {
-        App.instance?.getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
-    }
+    const val USER_ID = "USER_ID"
 
-    private val userPrefEditor: SharedPreferences.Editor by lazy {
-        userPref!!.edit()
-    }
+    const val USER_NAME = "USER_NAME"
+
+    const val USER_PASSWORD = "USER_PASSWORD"
+
+    private const val AUTO_LOGIN = "AUTO_LOGIN"
+
+    private val userPref = App.instance.getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
+
+
 
     fun putCookies(host: String, cookies: String) {
-        userPrefEditor.putString(host, cookies)
-        userPrefEditor.apply()
+        userPref.edit().putString(host, cookies).apply()
     }
 
     fun getCookies(host: String): String {
-        return userPref!!.getString(host, "")
+        return userPref.getString(host, "")
     }
 
-    fun putUserId(key: String = "USER_ID", id: Int) {
-        userPrefEditor.putInt(key, id)
-        userPrefEditor.apply()
+    fun putUserId( id: Int) {
+        userPref.edit().putInt(USER_ID, id).apply()
     }
 
-    fun getUserId(key: String = "USER_ID"): Int {
-        return userPref!!.getInt(key, -1)
+    fun getUserId(): Int {
+        return userPref.getInt(USER_ID, -1)
     }
+
+
+
+    fun putUserName(userName: String) {
+        userPref.edit().putString(USER_NAME, userName).apply()
+    }
+
+    fun getUserName(): String {
+        return userPref.getString(USER_NAME, "")
+    }
+
+    fun putUserPassword(userPassword: String) {
+        userPref.edit().putString(USER_PASSWORD, userPassword).apply()
+    }
+
+    fun getUserPassword():String {
+        return userPref.getString(USER_PASSWORD, "")
+    }
+
+    fun putAutoLogin(autoLogin: Boolean) {
+        userPref.edit().putBoolean(AUTO_LOGIN, autoLogin).apply()
+    }
+
+    fun getAutoLogin(): Boolean {
+        return userPref.getBoolean(AUTO_LOGIN, false)
+    }
+
 
 }

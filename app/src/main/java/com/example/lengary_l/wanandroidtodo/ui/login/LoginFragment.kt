@@ -27,7 +27,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import com.example.lengary_l.wanandroidtodo.R
 import com.example.lengary_l.wanandroidtodo.WelcomeActivity
 import com.example.lengary_l.wanandroidtodo.data.PostType
@@ -56,12 +55,25 @@ class LoginFragment : Fragment() {
                 .get(LoginDataViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_login, container, false)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (SharedPreferencesUtils.getAutoLogin()) {
+            navigateToWelcome(SharedPreferencesUtils.getUserId(),SharedPreferencesUtils.getUserName(), SharedPreferencesUtils.getUserPassword())
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        return inflater.inflate(R.layout.fragment_login, container, false)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(context){
+        subscribeUi()
+
+        with(context) {
             val translateAnimation = AnimationUtils.loadAnimation(this, R.anim.down_in)
             linear_layout?.startAnimation(translateAnimation)
         }
@@ -71,7 +83,7 @@ class LoginFragment : Fragment() {
         }
 
 
-        editUser.addTextChangedListener(object : TextWatcher{
+        editUser.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) = Unit
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -80,7 +92,7 @@ class LoginFragment : Fragment() {
             }
 
         })
-        editPassword.addTextChangedListener(object : TextWatcher{
+        editPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) = Unit
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -94,41 +106,44 @@ class LoginFragment : Fragment() {
             val userName: String = editUser.editableText.toString()
             val passWord: String = editPassword.editableText.toString()
 
-            if (userName.isNotValid()){
+            if (userName.isNotValid()) {
                 inputLayoutUser.error = getString(R.string.error_user_name)
                 return@setOnClickListener
             }
 
-            if (passWord.isNotValid()){
+            if (passWord.isNotValid()) {
                 inputLayoutPassword.error = getString(R.string.error_password)
                 return@setOnClickListener
             }
 
             mViewModel.setInput(userName, passWord, PostType.TYPE_LOGIN)
         }
-        subscribeUi()
+
+
     }
 
     private fun subscribeUi() {
         mViewModel.loginData.observe(viewLifecycleOwner, Observer {
-            if (it?.errorCode != 0){
-                inputLayoutPassword.error = it?.errorMsg
-            }else {
-                SharedPreferencesUtils.putUserId(id = it.data.id)
-                val intent = Intent(context, WelcomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+            it?.let {
+                val data = it.data
+                navigateToWelcome(data.id, data.username, data.password)
             }
         })
 
         mViewModel.loginExceptionData.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            inputLayoutUser.error = it
         })
+
 
     }
 
-
-
-
+    private fun navigateToWelcome(id: Int, userName: String, userPassword: String) {
+        val intent = Intent(context, WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(SharedPreferencesUtils.USER_ID, id)
+        intent.putExtra(SharedPreferencesUtils.USER_NAME, userName)
+        intent.putExtra(SharedPreferencesUtils.USER_PASSWORD, userPassword)
+        startActivity(intent)
+    }
 
 }

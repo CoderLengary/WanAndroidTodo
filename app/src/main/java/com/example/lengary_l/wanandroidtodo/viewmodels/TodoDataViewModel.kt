@@ -110,7 +110,6 @@ class TodoDataViewModel private constructor(
                     }
                 }
 
-
             }
             if (result is Result.Error) {
                 getAllTodoError.value = i++

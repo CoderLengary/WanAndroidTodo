@@ -25,7 +25,7 @@ import com.squareup.leakcanary.LeakCanary
 class App: Application() {
 
     companion object {
-        var instance: App? =null
+        lateinit var instance: App
     }
     override fun onCreate() {
         super.onCreate()

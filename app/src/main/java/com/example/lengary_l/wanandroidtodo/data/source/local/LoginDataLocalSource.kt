@@ -20,6 +20,7 @@ import com.example.lengary_l.wanandroidtodo.data.LoginData
 import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.data.source.LoginDataSource
+import com.example.lengary_l.wanandroidtodo.data.source.RemoteException
 import com.example.lengary_l.wanandroidtodo.data.source.Result
 import com.example.lengary_l.wanandroidtodo.room.dao.LoginDetailDataDao
 import com.example.lengary_l.wanandroidtodo.util.AppExecutors
@@ -59,7 +60,10 @@ class LoginDataLocalSource private constructor(
         }
     }
 
-    override suspend fun getLocalLoginData(): Result<LoginData> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData> =
+        withContext(mAppExecutors.ioContext) {
+            val result = mLoginDetailDataDao.queryLoginDetailDataById(id)
+            if (result != null)Result.Success(result) else Result.Error(RemoteException())
+        }
+
 }

@@ -52,11 +52,12 @@ class LoginDataRemoteSource private constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let {
-                    /*Even we get the wrong data whose error code is not zero(Not network exception),
-                     We need it to show the error message to the user,
-                     so we return it by {Result.Success}  instead of {Result.Error}
-                     */
-                    Result.Success(it)
+
+                    if (it.errorCode == 0) {
+                        Result.Success(it)
+                    }else {
+                        Result.Error(RemoteException(it.errorMsg))
+                    }
                 } ?: run {
                     Result.Error(RemoteException())
                 }
@@ -72,8 +73,12 @@ class LoginDataRemoteSource private constructor(
     }
 
 
-    override suspend fun getLocalLoginData(): Result<LoginData> = Result.Error(RemoteException())
+    override suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-    override suspend fun saveLoginData(data: LoginDetailData) = Unit
+    override suspend fun saveLoginData(data: LoginDetailData) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 }

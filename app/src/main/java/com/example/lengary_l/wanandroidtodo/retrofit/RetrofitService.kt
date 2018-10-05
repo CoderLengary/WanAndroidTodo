@@ -1,6 +1,6 @@
 package com.example.lengary_l.wanandroidtodo.retrofit
 
-import com.example.lengary_l.wanandroidtodo.data.DoOrUndoListData
+
 import com.example.lengary_l.wanandroidtodo.data.LoginData
 import com.example.lengary_l.wanandroidtodo.data.Status
 import com.example.lengary_l.wanandroidtodo.data.TodoData
@@ -32,13 +32,6 @@ interface RetrofitService {
         @POST(Api.GET_ALL_TODO + "{type}/json")
         fun getAllListByType(@Path("type") type: Int): Call<TodoData>
 
-        @POST(Api.GET_UNDO_LIST + "{type}/json/{page}")
-        fun getUndoList(@Path("type") type: Int,
-                        @Path("page") page: Int): Call<DoOrUndoListData>
-
-        @POST(Api.GET_DONE_LIST + "{type}/json/{page}")
-        fun getDoneList(@Path("type") type: Int,
-                        @Path("page") page: Int): Call<DoOrUndoListData>
 
 
         @FormUrlEncoded

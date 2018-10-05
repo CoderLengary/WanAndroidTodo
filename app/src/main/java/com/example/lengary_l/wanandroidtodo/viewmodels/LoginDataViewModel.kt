@@ -43,6 +43,7 @@ class LoginDataViewModel private constructor(
             }
             return INSTANCE as LoginDataViewModel
         }
+        const val AUTO_LOGIN_SUCCESS = "Login success"
     }
 
     val loginData = MutableLiveData<LoginData>()
@@ -52,6 +53,20 @@ class LoginDataViewModel private constructor(
     val loginExceptionData = MutableLiveData<String>()
 
     val registerExceptionData = MutableLiveData<String>()
+
+    val autoLoginData = MutableLiveData<String>()
+
+
+    fun autoLogin(userName: String, password: String) {
+        launchSilent(uiContext) {
+            val result = loginDataRepository.getRemoteLoginData(userName, password, PostType.TYPE_LOGIN)
+            if (result is Result.Success) {
+                autoLoginData.value = AUTO_LOGIN_SUCCESS
+            }else if(result is Result.Error){
+                autoLoginData.value = result.exception.message
+            }
+        }
+    }
 
     fun setInput(userName: String, password: String, type: PostType){
         launchSilent(uiContext) {

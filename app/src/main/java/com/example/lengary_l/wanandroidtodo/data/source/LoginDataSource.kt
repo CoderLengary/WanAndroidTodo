@@ -13,7 +13,7 @@ interface LoginDataSource {
 
     suspend fun saveLoginData(data: LoginDetailData)
 
-    suspend fun getLocalLoginData(): Result<LoginData>
+    suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData>
 
 
 

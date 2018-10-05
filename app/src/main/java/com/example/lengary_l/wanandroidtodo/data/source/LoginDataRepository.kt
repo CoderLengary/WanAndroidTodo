@@ -41,8 +41,8 @@ class LoginDataRepository private constructor(
 
 
 
-    override suspend fun getLocalLoginData(): Result<LoginData> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData> {
+         return mLocal.getLocalLoginDataById(id)
     }
 
     override suspend fun saveLoginData(data: LoginDetailData) {

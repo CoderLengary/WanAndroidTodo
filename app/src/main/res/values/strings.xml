@@ -72,6 +72,8 @@
     <!-- Add to do end -->
 
     <!-- Settings start -->
+    <string name="settings_user_info">User Info</string>
+    <string name="settings_user_name">User Name</string>
     <string name="settings_about">About</string>
     <string name="settings_version">Version</string>
     <string name="settings_rate">Rate</string>
@@ -116,5 +118,9 @@
     <!--Success start-->
     <string name="success">Success</string>
     <!--Success end-->
+
+    <!--App Bar Menu start-->
+    <string name="log_out">Log out</string>
+    <!--App Bar Menu end-->
 
 </resources>
