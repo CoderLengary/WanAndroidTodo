@@ -1,26 +1,24 @@
 package com.example.lengary_l.wanandroidtodo.data.source
 
 import com.example.lengary_l.wanandroidtodo.data.LoginData
-import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 import com.example.lengary_l.wanandroidtodo.data.PostType
 
 /**
  * Created by CoderLengary
  */
 class LoginDataRepository private constructor(
-        private val mRemote: LoginDataSource,
-        private val mLocal: LoginDataSource
+        private val mRemote: LoginDataSource
 ): LoginDataSource{
 
 
 
     companion object {
         private var INSTANCE: LoginDataRepository ?= null
-        fun getInstance(mRemote: LoginDataSource, mLocal: LoginDataSource): LoginDataRepository {
+        fun getInstance(mRemote: LoginDataSource): LoginDataRepository {
             if(INSTANCE==null) {
                 synchronized(LoginDataRepository::javaClass) {
                     if(INSTANCE == null) {
-                        INSTANCE = LoginDataRepository(mRemote, mLocal)
+                        INSTANCE = LoginDataRepository(mRemote)
                     }
                 }
             }
@@ -28,25 +26,12 @@ class LoginDataRepository private constructor(
         }
     }
     override suspend fun getRemoteLoginData(userName: String, password: String, type: PostType): Result<LoginData> {
-        val remoteResult = mRemote.getRemoteLoginData(userName, password, type)
-
-
-        if(remoteResult is Result.Success && remoteResult.data.errorCode != -1) {
-            saveLoginData(remoteResult.data.data)
-        }
-
-        return remoteResult
+        return mRemote.getRemoteLoginData(userName, password, type)
 
     }
 
 
 
-    override suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData> {
-         return mLocal.getLocalLoginDataById(id)
-    }
 
-    override suspend fun saveLoginData(data: LoginDetailData) {
-        mLocal.saveLoginData(data)
-    }
 
 }

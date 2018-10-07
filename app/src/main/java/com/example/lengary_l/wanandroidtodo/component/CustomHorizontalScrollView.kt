@@ -47,9 +47,9 @@ class CustomHorizontalScrollView: HorizontalScrollView {
 
     private var downTime: Long = 0
 
-    var downX:Float = 0.0.toFloat()
+    private var downX:Float = 0.0.toFloat()
 
-    var canClick = true
+    private var canClick = true
 
     companion object {
         private const val SUCCESS_DURATION = 100

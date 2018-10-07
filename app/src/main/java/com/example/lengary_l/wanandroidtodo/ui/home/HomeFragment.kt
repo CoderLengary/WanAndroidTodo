@@ -126,9 +126,7 @@ class HomeFragment: Fragment() {
                     mSelectedDate = "$mYear-$mMonth-$mDay"
                     //mViewModel.changeTodoDataByDate(mSelectedDate)
                     mViewModel.getLocalTodoDataByDate(mSelectedDate)
-                    adapter?.let {
-                        it.closeOtherOpenItem()
-                    }
+                    adapter?.closeOtherOpenItem()
                     mDataBinding.monthDay = "$mMonth / $mDay"
                     mDataBinding.year = mYear
                 }
@@ -226,7 +224,7 @@ class HomeFragment: Fragment() {
                     val editTitle = editTitle.editableText
                     val editContent = editContent.editableText
                     when {
-                        editTitle.isEmpty() -> Toast.makeText(context, "Title is non null", Toast.LENGTH_SHORT).show()
+                        editTitle.isEmpty() -> Toast.makeText(context, R.string.error_title, Toast.LENGTH_SHORT).show()
                         data != null -> mViewModel.updateTodo(data.id, editTitle.toString(), editContent.toString(), data.dateStr, data.status, data.type)
                         else -> mViewModel.submitTodo(editTitle.toString(), editContent.toString(), mSelectedDate, type)
                     }
@@ -286,7 +284,7 @@ class HomeFragment: Fragment() {
 
 
         mViewModel.getAllTodoError.observe(viewLifecycleOwner, Observer {
-            showAlertDialog()
+            showLoadDataErrorAlertDialog()
         })
 
         mViewModel.statusData.observe(viewLifecycleOwner, Observer {
@@ -314,7 +312,7 @@ class HomeFragment: Fragment() {
         })
     }
 
-    private fun showAlertDialog() {
+    private fun showLoadDataErrorAlertDialog() {
         val alertDialog = AlertDialog.Builder(context).create()
         alertDialog.setTitle(R.string.home_alert_dialog_title)
         alertDialog.setMessage(getString(R.string.home_alert_dialog_content))

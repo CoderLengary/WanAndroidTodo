@@ -48,8 +48,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_margin_half">
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_margin_half">
 
                 <TextView
                     android:id="@+id/textMonthDay"
@@ -66,9 +66,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/textMonthDay"
-                    android:layout_marginLeft="@dimen/activity_margin_half"
-                    android:layout_toLeftOf="@+id/currentCalenderLayout"
-                    android:layout_toRightOf="@+id/textMonthDay"
+                    android:layout_marginStart="@dimen/activity_margin_half"
+                    android:layout_toStartOf="@+id/currentCalenderLayout"
+                    android:layout_toEndOf="@+id/textMonthDay"
                     android:paddingBottom="6dp"
                     android:text="@{year}"
                     tools:text="2018" />
@@ -79,9 +79,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/textMonthDay"
-                    android:layout_alignParentRight="true">
+                    android:layout_alignParentEnd="true">
 
                     <ImageView
+                        android:contentDescription="@string/home_back_to_today"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerInside"
@@ -158,6 +159,7 @@
                         android:gravity="center">
 
                         <ImageView
+                            android:contentDescription="@string/empty_text"
                             android:src="@drawable/ic_fingerprint_black_24dp"
                             android:layout_width="36dp"
                             android:layout_height="36dp"

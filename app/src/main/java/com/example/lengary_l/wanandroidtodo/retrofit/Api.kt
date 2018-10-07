@@ -13,7 +13,7 @@ class Api private constructor() {
 
         const val REGISTER = BASE_URL + "user/register/"
 
-        const val TODO_BASE = BASE_URL + "lg/todo/"
+        private const val TODO_BASE = BASE_URL + "lg/todo/"
 
         const val GET_ALL_TODO = TODO_BASE + "list/"
 
@@ -25,9 +25,7 @@ class Api private constructor() {
 
         const val UPDATE_DONE = TODO_BASE + "done/"
 
-        const val GET_UNDO_LIST = TODO_BASE + "listnotdo/"
 
-        const val GET_DONE_LIST = TODO_BASE + "listdone/"
     }
 
 }

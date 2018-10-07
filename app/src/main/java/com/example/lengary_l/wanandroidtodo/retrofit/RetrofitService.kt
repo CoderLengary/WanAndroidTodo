@@ -53,10 +53,7 @@ interface RetrofitService {
         @POST(Api.DELETE_TODO + "{id}/json")
         fun deleteTodo(@Path("id") id: Int): Call<Status>
 
-        @FormUrlEncoded
-        @POST(Api.UPDATE_DONE + "{id}/json")
-        fun updateDone(@Path("id") id: Int,
-                           @Field("status") status: Int): Call<Status>
+
 
     }
 

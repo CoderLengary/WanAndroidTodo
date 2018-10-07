@@ -29,3 +29,5 @@ fun Int.changeToListType(): TodoListType =
         TodoListType.STUDY.value -> TodoListType.STUDY
         else -> TodoListType.LOVE
     }
+
+

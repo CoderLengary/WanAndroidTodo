@@ -44,7 +44,6 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
     private var mOpenItem: CustomHorizontalScrollView? =null
 
 
-
     fun setOpenItem(openItem: CustomHorizontalScrollView?) {
         mOpenItem = openItem
     }
@@ -111,12 +110,12 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
         when (iw.viewType) {
             ItemWrapper.TYPE_INCOMPLETE_STATUS -> {
                 with(viewHolder as StatusViewHolder) {
-                    itemView.textStatus.text = "Incomplete List"
+                    itemView.textStatus.text = itemView.context.getString(R.string.home_item_recycler_view_status_incomplete)
                 }
             }
             ItemWrapper.TYPE_COMPLETE_STATUS -> {
                 with(viewHolder as StatusViewHolder) {
-                    itemView.textStatus.text = "Complete List"
+                    itemView.textStatus.text = itemView.context.getString(R.string.home_item_recycler_view_status_complete)
                 }
             }
             ItemWrapper.TYPE_INCOMPLETE_LIST -> {

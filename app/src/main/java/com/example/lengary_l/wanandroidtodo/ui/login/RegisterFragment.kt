@@ -47,7 +47,7 @@ class RegisterFragment : Fragment()  {
     }
 
     private val mFactory by lazy {
-        Injection.provideLoginDataViewModelFactory(context!!)
+        Injection.provideLoginDataViewModelFactory()
     }
 
     private val mViewModel by lazy {

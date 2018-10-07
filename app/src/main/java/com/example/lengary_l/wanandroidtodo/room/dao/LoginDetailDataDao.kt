@@ -10,7 +10,7 @@ import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
  * Created by CoderLengary
  */
 @Dao
-interface LoginDetailDataDao {
+interface oginDetailDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLoginDetailData(data: LoginDetailData)

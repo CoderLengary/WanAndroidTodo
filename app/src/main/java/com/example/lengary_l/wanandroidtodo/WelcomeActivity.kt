@@ -20,16 +20,18 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.example.lengary_l.wanandroidtodo.component.AnimationButton
 import com.example.lengary_l.wanandroidtodo.injection.Injection
+import com.example.lengary_l.wanandroidtodo.ui.login.LoginActivity
 import com.example.lengary_l.wanandroidtodo.util.SharedPreferencesUtils
 import com.example.lengary_l.wanandroidtodo.viewmodels.LoginDataViewModel
 import com.example.lengary_l.wanandroidtodo.viewmodels.TodoDataViewModel
-import java.util.*
+import kotlinx.android.synthetic.main.activity_welcome.*
 
 class WelcomeActivity : AppCompatActivity() {
 
     private val mLoginDataViewModelFactory by lazy {
-        Injection.provideLoginDataViewModelFactory(this)
+        Injection.provideLoginDataViewModelFactory()
     }
 
     private val mLoginDataViewModel by lazy {
@@ -49,20 +51,28 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-        subscribeUi()
-        initData()
-        val timer = Timer()
-        timer.schedule(object : TimerTask() {
-            override fun run() {
+        waveView.startPlay()
+        animationButton.setAnimationButtonListener(object : AnimationButton.AnimationButtonListener{
+            override fun animationFinish() {
                 val intent = Intent(this@WelcomeActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
-        }, 5000)
+
+        })
+
+        subscribeUi()
+        initData()
+
 
     }
 
 
+    override fun onPause() {
+        super.onPause()
+        waveView.stopPlay()
+        animationButton.stop()
+    }
 
 
     private fun initData() {
@@ -82,6 +92,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
+        //animationButton.start()
         mTodoDataViewModel.clearAllTodo()
         mTodoDataViewModel.getAllRemoteTodoData()
     }
@@ -104,9 +115,10 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun backToLogin() {
+        animationButton.stop()
         SharedPreferencesUtils.putAutoLogin(false)
         SharedPreferencesUtils.putUserId(-1)
-        val intent = Intent(this, WelcomeActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }

@@ -25,6 +25,7 @@
         <variable
             name="selectedDate"
             type="String"/>
+
     </data>
 
     <LinearLayout
@@ -45,7 +46,7 @@
                 android:id="@+id/img_layout"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp">
 
@@ -57,6 +58,7 @@
                     android:src="@color/colorPrimary" />
 
                 <ImageView
+                    android:contentDescription="@string/home_item_recycler_view_img_type"
                     app:imageFromType="@{todoType}"
                     android:id="@+id/imgType"
                     android:layout_width="40dp"
@@ -78,7 +80,7 @@
                     android:textCursorDrawable="@drawable/edit_cursor_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="25dp"
                     android:background="@null"
                     android:hint="@string/home_custom_alert_dialog_title_hint"
                     android:textColorHint="@color/colorPrimary"
@@ -91,7 +93,7 @@
                     android:textCursorDrawable="@drawable/edit_cursor_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="25dp"
                     android:layout_marginTop="@dimen/activity_margin_half"
                     android:background="@null"
                     android:hint="@string/home_custom_alert_dialog_content_hint"
@@ -110,9 +112,9 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
                 android:layout_gravity="start|center_vertical"
-                android:text="Life"
+                app:textFromType="@{todoType}"
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimaryText"
                 android:layout_width="wrap_content"
@@ -133,7 +135,7 @@
                 app:btnTextColorFromType="@{todoType}"
                 android:textColor="@color/pink_ed7899"
                 android:background="@null"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </FrameLayout>

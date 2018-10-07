@@ -64,6 +64,8 @@ class SettingsFragment: Fragment() {
                 }
             }
             licensesListener = View.OnClickListener {
+                val intent = Intent(context, LicensesActivity::class.java)
+                startActivity(intent)
             }
 
             lizhaotaitangListener = View.OnClickListener {

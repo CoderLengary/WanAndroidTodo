@@ -17,7 +17,6 @@
 package com.example.lengary_l.wanandroidtodo.util
 
 import android.databinding.BindingAdapter
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -69,12 +68,12 @@ fun bindTextViewTextFromStatus(view: TextView, status: Int) {
     }
 }
 
-@BindingAdapter("visibleFromStatus")
-fun setVisibilityFromStatus(view: TextView, status: Int) {
-    if (status == 1) {
-        view.visibility = View.VISIBLE
-    }else {
-        view.visibility = View.GONE
+@BindingAdapter("textFromType")
+fun bindTextViewTextFromTodType(view: TextView, type: Int) {
+    when(type) {
+        TodoListType.LOVE.value -> view.text = TodoListType.LOVE.name
+        TodoListType.WORK.value -> view.text = TodoListType.WORK.name
+        TodoListType.STUDY.value -> view.text = TodoListType.STUDY.name
+        TodoListType.LIFE.value -> view.text = TodoListType.LIFE.name
     }
 }
-

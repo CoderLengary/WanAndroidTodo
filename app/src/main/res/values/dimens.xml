@@ -24,5 +24,7 @@
 
     <dimen name="card_vertical_margin_half">4dp</dimen>
 
-    <dimen name="main_content_left_margin">56dp</dimen>
+
+
+    <dimen name="card_elevation">2dp</dimen>
 </resources>

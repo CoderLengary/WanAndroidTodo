@@ -16,23 +16,24 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:orientation="vertical"
+    tools:context=".ui.settings.LicensesActivity">
 
-    <ImageView
-        android:id="@+id/imageViewEmpty"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_fingerprint_black_24dp"
-        android:hapticFeedbackEnabled="true"
-        android:layout_width="36dp"
-        android:layout_height="36dp" />
+    <android.support.v7.widget.Toolbar
+        android:elevation="8dp"
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Body1"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/empty_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

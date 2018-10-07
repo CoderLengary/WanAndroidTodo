@@ -36,7 +36,6 @@ ext {
     nav_version = '1.0.0-alpha05'
     kotlinx_coroutines_version = '0.24.0'
     okhttpLoggingInterceptorVersion = "3.10.0"
-    dateTimePickerVersion = "3.6.3"
     circleimageviewVersion = '2.1.0'
     calenderviewVersion = '3.4.7'
     speedDialVersion = '2.0.0'
@@ -65,16 +64,13 @@ dependencies {
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
 
-    //MaterialDateTimePicker
-    implementation("com.wdullaer:materialdatetimepicker:$dateTimePickerVersion") {
-        exclude group: 'com.android.support'
-    }
+
 
     //CalenderView
     implementation "com.haibin:calendarview:$calenderviewVersion"
 
     //Speed dial
-    implementation ("com.leinardi.android:speed-dial:$speedDialVersion") {
+    implementation("com.leinardi.android:speed-dial:$speedDialVersion") {
         exclude group: 'com.android.support'
     }
 

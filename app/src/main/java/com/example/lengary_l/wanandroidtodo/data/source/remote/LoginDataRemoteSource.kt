@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroidtodo.data.source.remote
 
 import com.example.lengary_l.wanandroidtodo.data.LoginData
-import com.example.lengary_l.wanandroidtodo.data.LoginDetailData
 import com.example.lengary_l.wanandroidtodo.data.PostType
 import com.example.lengary_l.wanandroidtodo.data.source.LoginDataSource
 import com.example.lengary_l.wanandroidtodo.data.source.RemoteException
@@ -73,12 +72,5 @@ class LoginDataRemoteSource private constructor(
     }
 
 
-    override suspend fun getLocalLoginDataById(id: Int): Result<LoginDetailData> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override suspend fun saveLoginData(data: LoginDetailData) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }

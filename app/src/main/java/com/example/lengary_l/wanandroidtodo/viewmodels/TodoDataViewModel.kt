@@ -119,6 +119,7 @@ class TodoDataViewModel private constructor(
     fun clearAllTodo() {
         launchSilent(uiContext) {
             mRepository.clearAll()
+            pointDateMap.clear()
         }
     }
 
@@ -138,9 +139,7 @@ class TodoDataViewModel private constructor(
 
     }
 
-    fun clearStatusData() {
-        statusData.value = null
-    }
+
 
     fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int) {
         launchSilent(uiContext) {

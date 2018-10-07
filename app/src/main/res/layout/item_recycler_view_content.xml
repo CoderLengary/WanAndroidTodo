@@ -35,8 +35,8 @@
         android:id="@+id/customHorizontalView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_margin_half"
-        android:paddingRight="8dp">
+        android:paddingStart="@dimen/activity_margin_half"
+        android:paddingEnd="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_marginEnd="@dimen/activity_margin_half"
                 android:layout_marginBottom="@dimen/card_vertical_margin_half"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="@dimen/cardview_default_elevation">
+                app:cardElevation="@dimen/card_elevation">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,6 +73,7 @@
                             android:src="@color/colorPrimary" />
 
                         <ImageView
+                            android:contentDescription="@string/home_item_recycler_view_img_type"
                             android:id="@+id/imgType"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
@@ -84,7 +85,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
                         android:paddingTop="5dp"

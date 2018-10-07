@@ -1,8 +1,5 @@
 package com.example.lengary_l.wanandroidtodo.data
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import com.example.lengary_l.wanandroidtodo.room.converter.IntTypeConverter
 import com.google.gson.annotations.Expose
@@ -26,46 +23,45 @@ data class LoginData(
         val errorMsg: String
 )
 
-@Entity( tableName = "login")
+
 @TypeConverters(IntTypeConverter::class)
 data class LoginDetailData(
-        @ColumnInfo(name = "collectIds")
+
         @SerializedName("collectIds")
         @Expose
         val collectIds: List<Int>,
 
-        @ColumnInfo(name = "email")
+
         @SerializedName("email")
         @Expose
         val email: String,
 
-        @ColumnInfo(name = "icon")
+
         @SerializedName("icon")
         @Expose
         val icon: String,
 
-        @PrimaryKey
-        @ColumnInfo(name = "id")
+
         @SerializedName("id")
         @Expose
         val id: Int,
 
-        @ColumnInfo(name = "password")
+
         @SerializedName("password")
         @Expose
         val password: String,
 
-        @ColumnInfo(name = "token")
+
         @SerializedName("token")
         @Expose
         val token: String,
 
-        @ColumnInfo(name = "type")
+
         @SerializedName("type")
         @Expose
         val type: Int,
 
-        @ColumnInfo(name = "username")
+
         @SerializedName("username")
         @Expose
         val username: String

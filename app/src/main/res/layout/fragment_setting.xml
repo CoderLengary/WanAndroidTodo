@@ -85,7 +85,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="@string/settings_user_info"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
@@ -109,7 +109,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:text="@string/settings_user_name"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -130,7 +130,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="@string/settings_about"
                     android:textColor="@color/colorAccent"
                     android:textSize="16sp"
@@ -154,7 +154,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:text="@string/settings_version"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -195,7 +195,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:text="@string/settings_rate"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -226,7 +226,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="@string/settings_licenses"
                     android:textSize="16sp"
                     android:textStyle="bold"
