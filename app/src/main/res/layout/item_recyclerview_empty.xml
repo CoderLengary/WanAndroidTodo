@@ -27,6 +27,6 @@
     android:layout_height="wrap_content"
     android:textSize="18sp"
     android:text="@string/home_item_recycler_view_empty"
-    android:textColor="@color/blue_2196F3"
+    android:textColor="@color/colorAccent"
     android:textStyle="bold"
     tools:text="Empty List"/>
