@@ -16,7 +16,10 @@
 
 package com.example.lengary_l.wanandroidtodo
 
+import android.app.AlertDialog
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -70,10 +73,13 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        stop()
+    }
+
+    private fun stop() {
         waveView.stopPlay()
         animationButton.stop()
     }
-
 
     private fun initData() {
         val id = intent.getIntExtra(SharedPreferencesUtils.USER_ID, -1)
@@ -91,8 +97,9 @@ class WelcomeActivity : AppCompatActivity() {
 
     }
 
+    //We need to get all the data, and save them to database.
     private fun loadData() {
-        //animationButton.start()
+        //In order to save the correct data, we clear the database first.
         mTodoDataViewModel.clearAllTodo()
         mTodoDataViewModel.getAllRemoteTodoData()
     }
@@ -103,8 +110,14 @@ class WelcomeActivity : AppCompatActivity() {
                 if (it == LoginDataViewModel.AUTO_LOGIN_SUCCESS) {
                     loadData()
                 }else {
-                    backToLogin()
+                    showAutoLoginErrorAlertDialog()
                 }
+            }
+        })
+
+        mTodoDataViewModel.getAllRemoteTodoError.observe(this, Observer {
+            it?.let {
+                showLoadDataErrorAlertDialog()
             }
         })
     }
@@ -123,6 +136,35 @@ class WelcomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun showAutoLoginErrorAlertDialog() {
+        stop()
+        val alertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setTitle(R.string.home_error_alert_dialog_title)
+        alertDialog.setCancelable(false)
+        alertDialog.setOnKeyListener { _, _, _ -> false }
+        alertDialog.setMessage(getString(R.string.home_error_alert_dialog_auto_login_content))
 
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.home_error_alert_dialog_back)) { _, _ ->
+            backToLogin()
+            alertDialog.dismiss()
+        }
+        alertDialog.show()
+    }
+
+    private fun showLoadDataErrorAlertDialog() {
+        stop()
+        val alertDialog = AlertDialog.Builder(this).create()
+        alertDialog.setTitle(R.string.home_error_alert_dialog_title)
+        alertDialog.setCancelable(false)
+        alertDialog.setOnKeyListener { _, _, _ -> false }
+        alertDialog.setMessage(getString(R.string.home_error_alert_dialog_load_data_content))
+
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.home_error_alert_dialog_close)) { _, _ ->
+            finish()
+            alertDialog.dismiss()
+        }
+        alertDialog.show()
+
+    }
 
 }

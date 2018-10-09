@@ -25,6 +25,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.LinearInterpolator
+import com.example.lengary_l.wanandroidtodo.R
 
 /**
  * Created by CoderLengary
@@ -51,7 +52,7 @@ class WaveView : View {
 
     private var mWaveAmplitude: Float = 0f
 
-    private val mWaveColor = -0x1000000
+    private val mWaveColor = context.getColor(R.color.green_00796B)
 
     private lateinit var mValueAnimator: ValueAnimator
 

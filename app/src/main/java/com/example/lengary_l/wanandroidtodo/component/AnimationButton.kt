@@ -41,7 +41,7 @@ class AnimationButton: View {
 
     private var mCurrentTwoCircleDistance = 0f
 
-    private val mBackGroundColor = -0x4382ad
+    private val mBackGroundColor = context.getColor(com.example.lengary_l.wanandroidtodo.R.color.green_00796B)
 
     private val mText = "Todo."
 

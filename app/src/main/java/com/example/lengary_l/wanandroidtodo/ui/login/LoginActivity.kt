@@ -19,7 +19,6 @@ package com.example.lengary_l.wanandroidtodo.ui.login
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.example.lengary_l.wanandroidtodo.R
 
 class LoginActivity : AppCompatActivity() {
@@ -29,9 +28,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.container)
-        initsFragment(savedInstanceState)
+        initFragment(savedInstanceState)
         showFragment(FragmentType.LOGIN)
-        Log.e("LoginActivity", "onCreate")
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
@@ -43,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun initsFragment(savedInstanceState: Bundle?){
+    private fun initFragment(savedInstanceState: Bundle?){
         val fm = supportFragmentManager
         if (savedInstanceState == null){
             mLoginFragment = LoginFragment.newInstance()
@@ -83,10 +81,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("LoginActivity", "onDestroy")
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()

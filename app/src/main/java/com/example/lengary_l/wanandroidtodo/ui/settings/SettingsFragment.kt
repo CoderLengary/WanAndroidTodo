@@ -105,7 +105,7 @@ class SettingsFragment: Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.menu_log_out) {
-            backToLogin()
+            //backToLogin()
         }
         return true
     }
@@ -135,6 +135,7 @@ class SettingsFragment: Fragment() {
         val intent = Intent(context, LoginActivity::class.java)
         SharedPreferencesUtils.putAutoLogin(false)
         SharedPreferencesUtils.putUserId(-1)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 

@@ -24,7 +24,7 @@ import com.example.lengary_l.wanandroidtodo.data.TodoDetailData
 interface OnRecyclerViewItemOnClickListener {
     fun onContentClick(data: TodoDetailData)
 
-    fun onCompelteClick(data: TodoDetailData)
+    fun onCompleteClick(data: TodoDetailData)
 
     fun onRevertClick(data: TodoDetailData)
 

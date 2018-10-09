@@ -38,6 +38,8 @@ class TodoDataViewModel private constructor(
         const val ADD_SUCCESS_MSG = "Add Success!"
         const val UPDATE_SUCCESS_MSG= "Update Success!"
         const val DELETE_SUCCESS_MSG = "Delete Success!"
+        const val ERROR = "ERROR"
+        const val ERROR_CODE = -1
         private var INSTANCE: TodoDataViewModel ?= null
         fun getInstance(mRepository: TodoDataRepository): TodoDataViewModel {
             if (INSTANCE == null) {
@@ -47,27 +49,28 @@ class TodoDataViewModel private constructor(
         }
     }
 
-    var i = 0
+
 
     //Get
-    val getAllTodoError = MutableLiveData<Int>()
-    val todoList = MutableLiveData<List<TodoDetailData>>()
-    val todoListError = MutableLiveData<Int>()
+    val getAllRemoteTodoError = MutableLiveData<Int>()
+    val localTodoListByDate = MutableLiveData<List<TodoDetailData>>()
 
 
-    //Submit
+
+    //Submit/Update/Delete
     val statusData = MutableLiveData<String>()
 
-    val pointDateMap = HashMap<String, Int>()
+    //We will mark all the dates whose todoList is not empty
+    val markDateMap = HashMap<String, Int>()
 
 
     fun getLocalTodoDataByDate(dateStr: String) {
         launchSilent(uiContext) {
             val result = mRepository.getLocalDataByDate(dateStr)
             if (result is Result.Success) {
-                todoList.value = result.data
+                localTodoListByDate.value = result.data
             }else {
-                todoListError.value = i++
+                localTodoListByDate.value = null
             }
         }
     }
@@ -90,10 +93,10 @@ class TodoDataViewModel private constructor(
                 for (todoListData in incompleteList) {
                     for (todoDetailData in todoListData.list) {
                         val dateStr = todoDetailData.dateStr
-                        if (pointDateMap.containsKey(dateStr)) {
-                            pointDateMap[dateStr] = pointDateMap[dateStr]!! + 1
+                        if (markDateMap.containsKey(dateStr)) {
+                            markDateMap[dateStr] = markDateMap[dateStr]!! + 1
                         }else {
-                            pointDateMap[dateStr] = 1
+                            markDateMap[dateStr] = 1
                         }
                     }
                 }
@@ -102,38 +105,42 @@ class TodoDataViewModel private constructor(
                 for (todoListData in completeList) {
                     for (todoDetailData in todoListData.list) {
                         val dateStr = todoDetailData.dateStr
-                        if (pointDateMap.containsKey(dateStr)) {
-                            pointDateMap[dateStr] = pointDateMap[dateStr]!! + 1
+                        if (markDateMap.containsKey(dateStr)) {
+                            markDateMap[dateStr] = markDateMap[dateStr]!! + 1
                         }else {
-                            pointDateMap[dateStr] = 1
+                            markDateMap[dateStr] = 1
                         }
                     }
                 }
 
             }
             if (result is Result.Error) {
-                getAllTodoError.value = i++
+                getAllRemoteTodoError.value = ERROR_CODE
             }
         }
     }
     fun clearAllTodo() {
         launchSilent(uiContext) {
             mRepository.clearAll()
-            pointDateMap.clear()
+            markDateMap.clear()
         }
     }
 
 
     fun submitTodo(title: String, content: String, date: String, type: TodoListType) {
-
+        if (markDateMap.containsKey(date)) {
+            markDateMap[date] = markDateMap[date]!! + 1
+        }else {
+            markDateMap[date] = 1
+        }
         //Actually, if we submit the todoData successfully, the data will be inserted into database
         launchSilent(uiContext) {
             val result = mRepository.submitItem(title, content, date, type.value)
 
             if (result is Result.Success) {
                 statusData.value = ADD_SUCCESS_MSG
-            }else if (result is Result.Error) {
-                statusData.value = result.exception.message
+            }else  {
+                statusData.value = ERROR
             }
         }
 
@@ -146,20 +153,24 @@ class TodoDataViewModel private constructor(
             val result = mRepository.updateItem(id, title, content, date, status, type)
             if (result is Result.Success) {
                 statusData.value = UPDATE_SUCCESS_MSG
-            }else if (result is Result.Error) {
-                statusData.value = result.exception.message
+            }else  {
+                statusData.value = ERROR
             }
 
         }
     }
 
-    fun deleteTodo(id: Int) {
+    fun deleteTodo(id: Int, dateStr: String) {
+
+        if (markDateMap.containsKey(dateStr)) {
+            markDateMap[dateStr] = markDateMap[dateStr]!! - 1
+        }
         launchSilent(uiContext) {
             val result = mRepository.deleteItemByRemote(id)
             if (result is Result.Success) {
                 statusData.value = DELETE_SUCCESS_MSG
-            }else if (result is Result.Error) {
-                statusData.value = result.exception.message
+            }else  {
+                statusData.value = ERROR
             }
         }
     }

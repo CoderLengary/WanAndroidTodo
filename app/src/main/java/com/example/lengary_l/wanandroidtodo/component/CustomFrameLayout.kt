@@ -29,6 +29,10 @@ import com.haibin.calendarview.CalendarLayout
 
 class CustomFrameLayout: FrameLayout, CalendarLayout.CalendarScrollView{
 
+
+    private var mDownX = 0f
+    private var mDownY = 0f
+
     private val mRecyclerView: RecyclerView by lazy {
         getChildAt(0) as RecyclerView
     }
@@ -38,13 +42,32 @@ class CustomFrameLayout: FrameLayout, CalendarLayout.CalendarScrollView{
     }
 
 
-
     constructor(context: Context):super(context)
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs)
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return true
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ev?.let {
+            val x = ev.x
+            val y = ev.y
+            when(ev.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    mDownX = x
+                    mDownY = y
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = x- mDownX
+                    val deltaY = y- mDownY
+                    if (Math.abs(deltaY)- Math.abs(deltaX) < 0) {
+                        parent.requestDisallowInterceptTouchEvent(true)
+
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
+
 
 }

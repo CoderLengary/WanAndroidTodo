@@ -133,7 +133,7 @@ class TodoAdapter(private val mList: MutableList<TodoDetailData>): RecyclerView.
 
                     binding.updateStatusListener = View.OnClickListener {
                         closeOtherOpenItem()
-                        mListener?.onCompelteClick(incompleteTodo)
+                        mListener?.onCompleteClick(incompleteTodo)
                     }
 
                     binding.deleteListener = View.OnClickListener {

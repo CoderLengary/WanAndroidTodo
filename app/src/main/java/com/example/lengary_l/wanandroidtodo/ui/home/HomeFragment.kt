@@ -19,13 +19,13 @@ package com.example.lengary_l.wanandroidtodo.ui.home
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,15 +88,20 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        subscribeUi()
+
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         //calendar
         initCalendar()
 
+        //markDate
+        markDate()
         //float action button
         initSpeedDial()
 
-        subscribeUi()
+
     }
 
 
@@ -104,7 +109,7 @@ class HomeFragment: Fragment() {
 
     private fun initCalendar() {
         mDataBinding.currentDay = calendarView.curDay.toString()
-        initCalendarPoints()
+
         calendarView.setOnCalendarSelectListener(object :CalendarView.OnCalendarSelectListener{
             override fun onCalendarOutOfRange(calendar: Calendar?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -124,7 +129,7 @@ class HomeFragment: Fragment() {
                         mDay = "0$mDay"
                     }
                     mSelectedDate = "$mYear-$mMonth-$mDay"
-                    //mViewModel.changeTodoDataByDate(mSelectedDate)
+
                     mViewModel.getLocalTodoDataByDate(mSelectedDate)
                     adapter?.closeOtherOpenItem()
                     mDataBinding.monthDay = "$mMonth / $mDay"
@@ -138,10 +143,10 @@ class HomeFragment: Fragment() {
         }
     }
 
-    private fun initCalendarPoints() {
-        val pointDateMap= mViewModel.pointDateMap
-        val dateStrList = pointDateMap.keys.filter {
-            pointDateMap[it]!! > 0
+    private fun markDate() {
+        val markDateMap= mViewModel.markDateMap
+        val dateStrList = markDateMap.keys.filter {
+            markDateMap[it]!! > 0
         }
         val map = HashMap<String, Calendar>()
         for (dateStr in dateStrList) {
@@ -195,6 +200,8 @@ class HomeFragment: Fragment() {
     }
 
 
+    //Submit -> data == null
+    //Update -> data != null
     private fun openAlertDialog(data: TodoDetailData?, type: TodoListType) {
         val builder = AlertDialog.Builder(context)
         mDialog = builder.create()
@@ -236,23 +243,61 @@ class HomeFragment: Fragment() {
 
     private fun subscribeUi() {
 
-        mViewModel.todoList.observe(viewLifecycleOwner, Observer {
+
+        mViewModel.statusData.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    TodoDataViewModel.ADD_SUCCESS_MSG -> {
+                        mDialog?.let {
+                            it.dismiss()
+                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                            markDate()
+                        }
+                    }
+                    TodoDataViewModel.UPDATE_SUCCESS_MSG -> {
+
+                        mDialog?.let {
+                            it.dismiss()
+                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                        } ?: run {
+                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                        }
+                    }
+
+                    TodoDataViewModel.DELETE_SUCCESS_MSG -> {
+                        mViewModel.getLocalTodoDataByDate(mSelectedDate)
+                        markDate()
+                    }
+                    else -> Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        })
+
+
+
+        mViewModel.localTodoListByDate.observe(viewLifecycleOwner, Observer {
             it?.let { list ->
+
                 recyclerView.visibility = View.VISIBLE
                 emptyLayout.visibility = View.INVISIBLE
                 if (adapter == null) {
                     adapter = TodoAdapter(list as MutableList<TodoDetailData>)
-                    adapter?.setItemClickListener(object : OnRecyclerViewItemOnClickListener{
-                        override fun onCompelteClick(data: TodoDetailData) {
+                    adapter!!.setItemClickListener(object : OnRecyclerViewItemOnClickListener {
+                        override fun onCompleteClick(data: TodoDetailData) {
+                            Log.e("click", "update complete")
                             mViewModel.updateTodo(data.id, data.title, data.content, data.dateStr, 1, data.type)
                         }
 
                         override fun onRevertClick(data: TodoDetailData) {
+                            Log.e("click", "update revert")
                             mViewModel.updateTodo(data.id, data.title, data.content, data.dateStr, 0, data.type)
                         }
 
                         override fun onDeleteClick(data: TodoDetailData) {
-                            mViewModel.deleteTodo(data.id)
+
+                            mViewModel.deleteTodo(data.id, data.dateStr)
+
                         }
 
                         override fun onContentClick(data: TodoDetailData) {
@@ -267,73 +312,18 @@ class HomeFragment: Fragment() {
                         }
                     })
                     recyclerView.adapter = adapter
-                }else {
+                } else {
                     adapter?.update(list as MutableList<TodoDetailData>)
                 }
-            }
-        })
-
-        mViewModel.todoListError.observe(viewLifecycleOwner, Observer {
-            it?.let {
+            } ?: also {
                 recyclerView.visibility = View.INVISIBLE
                 emptyLayout.visibility = View.VISIBLE
             }
         })
-
-
-
-
-        mViewModel.getAllTodoError.observe(viewLifecycleOwner, Observer {
-            showLoadDataErrorAlertDialog()
-        })
-
-        mViewModel.statusData.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                when(it) {
-                    TodoDataViewModel.ADD_SUCCESS_MSG -> {
-                        mDialog?.let {
-                            it.dismiss()
-                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
-                        }
-                    }
-                    TodoDataViewModel.UPDATE_SUCCESS_MSG -> {
-                        mDialog?.let {
-                            it.dismiss()
-                            mViewModel.getLocalTodoDataByDate(mSelectedDate)
-                        }
-                    }
-                    TodoDataViewModel.DELETE_SUCCESS_MSG -> {
-                        mViewModel.getLocalTodoDataByDate(mSelectedDate)
-                    }
-                    else -> Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-
-                }
-            }
-        })
     }
 
-    private fun showLoadDataErrorAlertDialog() {
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setTitle(R.string.home_alert_dialog_title)
-        alertDialog.setMessage(getString(R.string.home_alert_dialog_content))
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.home_alert_dialog_positive)) { _, _ ->
-            refresh()
-            alertDialog.dismiss()
-        }
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.home_alert_dialog_negative)) { _, _ ->
-            alertDialog.dismiss()
-            closeApp()
-        }
-        alertDialog.show()
 
-    }
 
-    private fun closeApp() {
-        activity?.finish()
-    }
 
-    private fun refresh() {
-        mViewModel.getAllRemoteTodoData()
-    }
 
 }

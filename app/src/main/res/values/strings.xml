@@ -43,14 +43,17 @@
 
     <string name="home_custom_alert_dialog_title_hint">Enter the title here</string>
     <string name="home_custom_alert_dialog_content_hint">Enter your content here(Optional)</string>
-    <string name="home_custom_alert_dialog_btn_sure">Sure</string>
+    <string name="home_custom_alert_dialog_btn_sure">Submit</string>
     <string name="home_custom_alert_dialog_btn_update">Update</string>
 
 
-    <string name="home_alert_dialog_title">Warning</string>
-    <string name="home_alert_dialog_content">No network, could not load any data for you</string>
-    <string name="home_alert_dialog_positive">Refresh</string>
-    <string name="home_alert_dialog_negative">Close App</string>
+    <string name="home_error_alert_dialog_title">Warning</string>
+    <string name="home_error_alert_dialog_load_data_content">No network, could not load any data for you</string>
+    <string name="home_error_alert_dialog_auto_login_content">Auto login fail, check your network</string>
+    <string name="home_error_alert_dialog_refresh">Refresh</string>
+    <string name="home_error_alert_dialog_close">Close App</string>
+    <string name="home_error_alert_dialog_back">Back to login</string>
+
 
     <string name="home_item_recycler_view_img_type">Categories</string>
     <string name="home_item_recycler_view_status_incomplete">Incomplete List</string>
